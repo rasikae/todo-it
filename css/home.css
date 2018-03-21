@@ -1,0 +1,63 @@
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.topnav {
+    overflow: hidden;
+    background-color: red;
+}
+
+.topnav a {
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+/*
+.topnav a:hover {
+    background-color: #aaa;
+    color: white;
+}*/
+
+.topnav active {
+    background-color: red;
+    color: white;
+}
+
+.topnav input[type=text]{
+    padding: 10px;
+    display: inline-block;
+    margin: auto;
+}
+
+.sidenav {
+    position: absolute;
+    overflow: hidden;
+    background-color: Gray;
+    style: "margin-left:25%"
+    border-right: 4px solid black;
+    width: 25%;
+    height: 100%;
+    font-size: 22px;
+    left: 0;
+}
+
+#projectList {
+    padding-left: 1.2em;
+    color: red;
+}
+
+.mainWindow {
+    position: absolute;
+    left: 25%;
+    padding-left: 16px;
+}
+
+#sidenavPlus {
+    position: fixed;
+    bottom: 0px;
+}

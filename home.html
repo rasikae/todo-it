@@ -1,87 +1,32 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-}
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="css/home.css">
+    </head>
 
-.topnav {
-  overflow: hidden;
-  background-color: red;
-}
+    <body>
+        <div class="topnav">
+            <a class="active" href="test.html"><img src="images/Logo (White).png" height=90px width=200px align="left" style="display:inline"></a>
+            <a class="active" href="test.html"><img src="images/backarrow.png" height =20px width=20px></a>
+            <div style="text-align: center;"  vertical-align: middle>
+                <input type="text" placeholder="Search...">
+                <a class="active" href="account.html"> <img src="images/accountpic.png" align="right" float = "right"></a>
+            </div>
+        </div>
 
-.topnav a {
-  color: black;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-}
-/*
-.topnav a:hover {
-  background-color: #aaa;
-  color: white;
-}*/
+        <div class = "sidenav">
+            <ul id="projectList">
+                <li> <span style="color:black">Project 1</span></li>
+                <li> <span style="color:black">Project 2</span></li>
+                <li> <span style="color:black">Project 3</span></li>
+            </ul>
+            <img id="sidenavPlus" src="images/+.png" align="left">
+        </div>
 
-.topnav active {
-  background-color: red;
-  color: white;
-}
-.topnav input[type=text]{
-    padding: 10px;
-		display:inline-block;
-    margin: auto;
-}
-.sidenav {
-	overflow: hidden;
-	background-color: Gray;
-  style: "margin-left:25%"
-  border-right: 4px solid black;
-  height: 100%;
-  font-size: 22px;
-  position: absolute;
-  left:0;
-}
-  .fix{
-    position:fixed;
-    bottom:0px;
-  }
-  .main{
-  	position:absolute;
-    left:25%;
-  }
-  ul{ padding-left: 1.2em;}
-  </style>
-</head>
-<body>
-
-<div class="topnav">
-  <a class="active" href="test.html"><img src="Logo (White).png" height=90px width=200px align="left" style="display:inline"></a>
-  <a class="active" href="test.html"><img src="backarrow.png" height =20px width=20px></a>
-  <div style="text-align: center;"  vertical-align: middle>
-    <input type="text" placeholder="Search...">
-    <a class="active" href="account.html"> <img src="accountpic.png" align="right" float = "right"></a>
-	</div>	
-
-</div>
-  
-  
-<div class = "sidenav" style = "width: 25%">
-  <ul style="color: red">
-    <li> <span style="color:black">Project 1</span></li>
-    <li> <span style="color:black">Project 2</span></li>
-    <li> <span style="color:black">Project 3</span></li>
-  </ul>
-  <img src="+.png" align="left" class=fix>
-</div>  
-  
-<div class = "main" style="padding-left:16px">
-  <h2>Projects</h2>
-  <p>Some tasks..</p>
-</div>
-
-</body>
+        <div class = "mainWindow">
+            <h2>Projects</h2>
+            <p>Some tasks..</p>
+        </div>
+    </body>
 </html>
