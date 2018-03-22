@@ -21,12 +21,54 @@
                 <li> <span style="color:black">Project 2</span></li>
                 <li> <span style="color:black">Project 3</span></li>
             </ul>
-            <img id="sidenavPlus" src="images/+.png" align="left">
+            <button onclick="document.getElementById('id01').style.display='block'"><img src="images/plus.png" width=25% height=25% align="left"></button>
         </div>
 
         <div class = "mainWindow">
             <h2>Projects</h2>
             <p>Some tasks..</p>
         </div>
+        <div id="id01" class="modal">
+            <div class="container">
+                <br/>  
+                <h2>New Task</h2>
+              <label for="title"><b>Title</b></label><br/>
+              <input type="text" placeholder="Enter Title" name="title" required>
+                <br/>
+              <label for="dodate"><b>Do Date</b></label>
+              <input type="date" name="dodate" required>
+              
+              <label for="duedate"><b>Due Date</b></label>
+              <input type="date" name="duedate" required>
+              <br/><br/>    
+              <label for="progress"><b>Progress</b></label>
+              <select name="progress">
+                  <option value="notstarted">Not Started</option>
+                  <option value="inprogress">In Progress</option>
+                  <option value="done">Done</option>
+                </select>
+                <br/> <br/>
+              <label for="desc"><b>Description</b></label><br/>
+              <div class = "description">
+                  <input type="text" placeholder="Enter Description" name="desc" required><br/>
+              </div>
+              <label><b>Tags</b></label><br/><br/>
+              <div align="right">
+                <button type="submit">Done</button>
+                <button type="button">></button>
+              </div>
+            </div>
+        </div>
+        <script>
+        // Get the modal
+        var modal = document.getElementById('id01');
+        
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        </script>
     </body>
 </html>
