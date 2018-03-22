@@ -58,13 +58,11 @@ body {
     position: fixed;
     bottom: 0;
 }
-.mainWindow input[type=text]{
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
+.h2{
+    border-bottom: 1px solid black;
+    width:100%;
+    height:1em;
+    display:inline-block;
 }
 .container{
     width: 50%;
@@ -74,6 +72,15 @@ body {
     border: 3px solid #ccc;
     box-sizing: border-box;
     background: white;
+}
+.container input[type=text]{
+    width: 100%;
+    height: 35px;
+    margin: auto;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 14pt;
 }
 
 /* The Modal (background) */
@@ -94,7 +101,7 @@ body {
 .modal-content {
     background-color: #fefefe;
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    width: 100%; /* Could be more or less, depending on screen size */
 }
 
 #projectList {

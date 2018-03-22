@@ -28,19 +28,24 @@
             <h2>Projects</h2>
             <p>Some tasks..</p>
         </div>
+        
+        
+        
         <div id="id01" class="modal">
             <div class="container">
-                <br/>  
-                <h2>New Task</h2>
+              <h2><span class="h2">
+                  New Task
+              </span></h2>
+              
               <label for="title"><b>Title</b></label><br/>
-              <input type="text" placeholder="Enter Title" name="title" required>
-                <br/>
+              <input type="text" placeholder="Enter Title" name="title" required> <br/><br/>
+              
               <label for="dodate"><b>Do Date</b></label>
               <input type="date" name="dodate" required>
               
-              <label for="duedate"><b>Due Date</b></label>
-              <input type="date" name="duedate" required>
-              <br/><br/>    
+              <label for="duedate"><b>&nbsp Due Date</b></label>
+              <input type="date" name="duedate" required> <br/><br/>    
+              
               <label for="progress"><b>Progress</b></label>
               <select name="progress">
                   <option value="notstarted">Not Started</option>
@@ -48,17 +53,23 @@
                   <option value="done">Done</option>
                 </select>
                 <br/> <br/>
+              
               <label for="desc"><b>Description</b></label><br/>
               <div class = "description">
-                  <input type="text" placeholder="Enter Description" name="desc" required><br/>
+                  <input type="text" placeholder="Enter Description" name="desc" required><br/><br/>
               </div>
+              
               <label><b>Tags</b></label><br/><br/>
+              
               <div align="right">
                 <button type="submit">Done</button>
                 <button type="button">></button>
               </div>
             </div>
         </div>
+        
+        
+        
         <script>
         // Get the modal
         var modal = document.getElementById('id01');
