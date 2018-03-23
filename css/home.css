@@ -114,7 +114,16 @@ body {
     left: 15%;
     padding-left: 16px;
 }
-
+.mainWindow button{
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    position: fixed;
+    right:0;
+}
 #sidenavPlus {
     position: fixed;
     bottom: 0px;
