@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Todo-It</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="css/home.css">
     </head>
@@ -26,27 +27,47 @@
 
         <div class = "mainWindow">
             <button onclick="document.getElementById('id01').style.display='block'"><img src="images/plus.png" width=25% height=25% align="right"></button>
-            <h2>Projects</h2>
-            <p>Some tasks..</p>
+            <h5><span style="font-weight: normal">Project 1</span></h5>
+            <p>
+                <div class="subprojects">
+                    <header class="subprojects-title">
+                        <!--<span onclick="document.getElementById('id01').style.display='none'"
+                        class="w3-button w3-display-topright">&times;</span>-->
+                        <h2>Sprints</h2>
+                    </header>
+                    <div class="subprojects-content">
+                        <ul id="subprojectList">
+                            <li> <span style="color:black">Sprint 1</span></li>
+                            <li> <span style="color:black">Sprint 2</span></li>
+                        </ul>
+                        <ul id="taskList">
+                            <form action="">
+                                <li> <input type="checkbox" name="task" value="1">Acquire sprint schedule<br></li>
+                                <li> <input type="checkbox" name="task" value="2">Read sprint guidelines<br></li>
+                            </form>
+                        </ul>
+                    </div>
+                </div>
+            </p>
         </div>
-        
-        
-        
+
+
+
         <div id="id01" class="modal">
             <div class="container">
               <h2><span class="h2">
                   New Task
               </span></h2>
-              
+
               <label for="title"><b>Title</b></label><br/>
               <input type="text" placeholder="Enter Title" name="title" required> <br/><br/>
-              
+
               <label for="dodate"><b>Do Date</b></label>
               <input type="date" name="dodate" required>
-              
+
               <label for="duedate"><b>&nbsp Due Date</b></label>
-              <input type="date" name="duedate" required> <br/><br/>    
-              
+              <input type="date" name="duedate" required> <br/><br/>
+
               <label for="progress"><b>Progress</b></label>
               <select name="progress">
                   <option value="notstarted">Not Started</option>
@@ -54,34 +75,34 @@
                   <option value="done">Done</option>
                 </select>
                 <br/> <br/>
-              
+
               <label for="desc"><b>Description</b></label><br/>
               <div class = "description">
                   <input type="text" placeholder="Enter Description" name="desc" required><br/><br/>
               </div>
-              
+
               <label><b>Tags</b></label><br/><br/>
-              
+
               <div align="right">
                 <button type="submit">Done</button>
                 <button type="button">></button>
               </div>
             </div>
         </div>
-        
-        
+
+
         <div id="id02" class="modal">
             <div class="container">
               <h2><span class="h2">
                   New Project
               </span></h2>
-              
+
               <label for="title"><b>Title</b></label><br/>
               <input type="text" placeholder="Enter Title" name="title" required> <br/><br/>
-              
+
               <label for="duedate"><b>&nbsp Due Date</b></label>
-              <input type="date" name="duedate" required> <br/><br/>    
-              
+              <input type="date" name="duedate" required> <br/><br/>
+
               <label for="progress"><b>Progress</b></label>
               <select name="progress">
                   <option value="notstarted">Not Started</option>
@@ -89,7 +110,7 @@
                   <option value="done">Done</option>
                 </select>
                 <br/> <br/>
-                
+
                <label for="parentProject"><b>Progress</b></label>
                   <select name="project">
                   <option value="Project 1">Project 1</option>
@@ -97,26 +118,26 @@
                   <option value="Project 3">Project 3</option>
                 </select>
                 <br/> <br/>
-              
+
               <label for="desc"><b>Description</b></label><br/>
               <div class = "description">
                   <input type="text" placeholder="Enter Description" name="desc" required><br/><br/>
               </div>
-              
+
               <label><b>Tags</b></label><br/><br/>
-              
+
               <div align="right">
                 <button type="submit">Done</button>
                 <button type="button">></button>
               </div>
             </div>
         </div>
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
         <script>
         // Get the modal
         var modal = document.getElementById('id01');

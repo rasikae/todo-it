@@ -128,3 +128,35 @@ body {
     position: fixed;
     bottom: 0px;
 }
+
+.subprojects {
+    display: inline-block;
+    border: 1px solid black;
+    width: 300px;
+    height: 250px;
+}
+
+.subprojects-title {
+    border-bottom: 1px solid black;
+    color: white;
+    background-color: Gray;
+    font-size: 14px;
+    height: 50px;
+    padding-top: 0.01em;
+    padding-bottom: 0.01em;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.subprojects-content {
+    color: red;
+}
+
+.subprojects li {
+    margin-bottom: 7px;
+}
+
+#taskList {
+    list-style: none;
+    color: black;
+}
