@@ -85,7 +85,7 @@
 
               <div align="right">
                 <button type="submit">Done</button>
-                <button type="button">></button>
+                <button onclick="document.getElementById('id03').style.display = 'block'" type="button">></button>
               </div>
             </div>
         </div>
@@ -111,7 +111,7 @@
                 </select>
                 <br/> <br/>
 
-               <label for="parentProject"><b>Progress</b></label>
+               <label for="parentProject"><b>Project</b></label>
                   <select name="project">
                   <option value="Project 1">Project 1</option>
                   <option value="Project 2">Project 2</option>
@@ -132,6 +132,43 @@
               </div>
             </div>
         </div>
+        
+        <div id="id03" class="modal">
+            <div class="container">
+              <h2><span class="h2">
+                  New Subtask
+              </span></h2>
+
+              <label for="title"><b>Title</b></label><br/>
+              <input type="text" placeholder="Enter Title" name="title" required> <br/><br/>
+
+              <label for="dodate"><b>Do Date</b></label>
+              <input type="date" name="dodate" required>
+
+              <label for="duedate"><b>&nbsp Due Date</b></label>
+              <input type="date" name="duedate" required> <br/><br/>
+
+              <label for="progress"><b>Progress</b></label>
+              <select name="progress">
+                  <option value="notstarted">Not Started</option>
+                  <option value="inprogress">In Progress</option>
+                  <option value="done">Done</option>
+                </select>
+                <br/> <br/>
+
+              <label for="desc"><b>Description</b></label><br/>
+              <div class = "description">
+                  <input type="text" placeholder="Enter Description" name="desc" required><br/><br/>
+              </div>
+
+              <label><b>Tags</b></label><br/><br/>
+
+              <div align="right">
+                <button type="submit">Done</button>
+                <button onclick='foo();' type="button">></button>
+              </div>
+            </div>
+        </div>
 
 
 
@@ -142,6 +179,7 @@
         // Get the modal
         var modal = document.getElementById('id01');
         var modal2 = document.getElementById('id02');
+        var modal3 = document.getElementById('id03');
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event) {
             if (event.target == modal) {
@@ -149,6 +187,9 @@
             }
             if(event.target == modal2){
                 modal2.style.display = "none";
+            }
+            if(event.target == modal3){
+                modal3.style.display = "none";
             }
         }
         </script>
