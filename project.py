@@ -1,10 +1,10 @@
 class Project:
-	def __init__(self, iD, title, description, due_date, progess, tags, parent_project, tasks):
+	def __init__(self, iD, title, description, due_date, progress, tags, parent_project, tasks):
 		self.iD = iD
 		self.title = title
 		self.description = description
 		self.due_date = due_date
-		self.progess = progess
+		self.progress = progress
 		self.tags = tags
 		self.parent_project = parent_project
 		self.tasks = tasks
@@ -20,7 +20,7 @@ class Project:
 		self.due_date= new
 
 	def change_progress(new):
-		self.progess = new
+		self.progress = new
 
 	def change_tags(new):
 		self.tags= new
@@ -46,7 +46,7 @@ class Project:
 		return self.due_date
 
 	def get_progress():
-		return self.progess 
+		return self.progress 
 
 	def get_tags():
 		return self.tags
