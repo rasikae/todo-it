@@ -3,17 +3,17 @@
     <head>
         <title>Todo-It</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-	{% load static %}
+        {% load static %}
         <link rel="stylesheet" type="text/css" href="{% static 'task/css/home.css' %}">
     </head>
 
     <body>
         <div class="topnav">
             <a class="active" href="home.html"><img src="{% static 'task/images/Logo (White).png' %}" height=90px width=200px align="left"></a>
-            <div style="text-align: center;" >
+            <div class="active">
                 <a class="active" href="home.html"><img src="{% static 'task/images/arrow.png' %}" height =25px width=25px></a>
-                <input type="text" placeholder="Search...">
-                <a class="active" href="login.html"> <img src="{% static 'task/images/user.png' %}" height=40px width=40px align="right" ></a>
+                <input type="text" placeholder="Search">
+                <a class="active" href="{% url 'login' %}"> <img src="{% static 'task/images/user.png' %}" height=40px width=40px align="right"></a>
             </div>
         </div>
 

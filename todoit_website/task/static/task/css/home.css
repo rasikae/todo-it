@@ -1,14 +1,15 @@
 
 body {
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    background-color: #efefef;
+    font-family: Roboto, sans-serif;
 }
 
 .topnav {
     overflow: hidden;
     width:100%;
-    background-color: red;
-    border-bottom: 2px solid black;
+    background-color: #a61c02;
+    /*border-bottom: 2px solid black;*/
 }
 
 .topnav a {
@@ -18,29 +19,34 @@ body {
     font-size: 17px;
     position: relative;
     top: 10px;
+    padding: 0 10px 0 50px; /*top, right, bottom, left*/
 }
-/*
-.topnav a:hover {
+
+/*.topnav a:hover {
     background-color: #aaa;
     color: white;
 }*/
 
-.topnav active {
-    background-color: red;
+/*.topnav active {
+    background-color: black;
     color: white;
 }
-
+*/
 .topnav input[type=text]{
-    width: 25%;
-    height: 30px;
-    position: relative;
-    top:1px;
+    width: 40%;
+    font-family: Roboto;
+    font-size: 15px;
+    height: 35px;
+    border-radius: 7px;
+    border: none;
+    padding: 25px 10px 25px 10px;
+    box-sizing: border-box;
 }
 
 .sidenav {
     position: absolute;
     overflow: hidden;
-    background-color: Gray;
+    background-color: #efefef;
     border-right: 2px solid black;
     width: 15%;
     height: 88%;
@@ -106,7 +112,7 @@ body {
 
 #projectList {
     padding-left: 1.2em;
-    color: red;
+    color: #a61c02;
 }
 
 .mainWindow {
@@ -134,12 +140,13 @@ body {
     border: 1px solid black;
     width: 300px;
     height: 250px;
+    background-color: #ffffff;
 }
 
 .subprojects-title {
     border-bottom: 1px solid black;
     color: white;
-    background-color: Gray;
+    background-color: #262626;
     font-size: 14px;
     height: 50px;
     padding-top: 0.01em;
@@ -148,9 +155,10 @@ body {
     padding-right: 16px;
 }
 
-.subprojects-content {
-    color: red;
+/*.subprojects-content {
+    color: #a61c02;
 }
+*/
 
 .subprojects li {
     margin-bottom: 7px;
