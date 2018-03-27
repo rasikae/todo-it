@@ -25,7 +25,7 @@ SECRET_KEY = 'hau4vwisu$q2hp%vw$a3)lz+=+s01m%3*dt1u1&4tyt3-hwe6q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['todo-it-mahonj7.c9users.io']
 
 
 # Application definition
