@@ -21,12 +21,37 @@
 
         <div class = "sidenav">
             <ul id="projectList">
+                <li> <span style="color:black">Project 1</span></li>
+                <li> <span style="color:black">Project 2</span></li>
+                <li> <span style="color:black">Project 3</span></li>
             </ul><!--Below needs to be modified for project. Right now it also opens new task-->
             <button onclick="document.getElementById('id02').style.display='block'"><img src="{% static 'task/images/plus.png' %}" width=25% height=25% align="left" padding-right="1px"></button>
         </div>
 
         <div class = "mainWindow">
             <button onclick="document.getElementById('id01').style.display='block'"><img src="{% static 'task/images/plus.png' %}" width=25% height=25% align="right"></button>
+            <h5><span style="font-weight: normal">Project 1</span></h5>
+            <p>
+                <div class="subprojects">
+                    <header class="subprojects-title">
+                        <!--<span onclick="document.getElementById('id01').style.display='none'"
+                        class="w3-button w3-display-topright">&times;</span>-->
+                        <h2>Sprints</h2>
+                    </header>
+                    <div class="subprojects-content">
+                        <ul id="subprojectList">
+                            <li> <span style="color:black">Sprint 1</span></li>
+                            <li> <span style="color:black">Sprint 2</span></li>
+                        </ul>
+                        <ul id="taskList">
+                            <form action="">
+                                <li> <input type="checkbox" name="task" value="1">Acquire sprint schedule<br></li>
+                                <li> <input type="checkbox" name="task" value="2">Read sprint guidelines<br></li>
+                            </form>
+                        </ul>
+                    </div>
+                </div>
+            </p>
         </div>
 
 
