@@ -31,5 +31,5 @@ def home(request):
     # if a GET (or any other method) we'll create a blank form
     else:
         form = taskform()
-        
-    return render(request, 'task/home.html', {'form': form})
+    results=Task.objects.all()
+    return render(request, 'task/home.html', {'tasks':results, 'form': form})
