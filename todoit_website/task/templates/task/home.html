@@ -20,8 +20,11 @@
         </div>
 
         <div class = "sidenav">
-            <ul id="projectList">
-            </ul><!--Below needs to be modified for project. Right now it also opens new task-->
+            <div id="myDIV">
+                <ul id="projectList">
+                    <li> <span style="color:black" style = "display: block">Project 1</span></li>
+                </ul><!--Below needs to be modified for project. Right now it also opens new task-->
+            </div>
             <button onclick="document.getElementById('id02').style.display='block'"><img src="{% static 'task/images/plus.png' %}" width=25% height=25% align="left" padding-right="1px"></button>
         </div>
 
@@ -105,7 +108,7 @@
               <label><b>Tags</b></label><br/><br/>
 
               <div align="right">
-                <button type="submit">Done</button>
+                <button type="submit" onclick="myFunction()">Done</button>
                 <button type="button">></button>
               </div>
             </div>
@@ -147,6 +150,16 @@
               </div>
             </div>
         </div>
-
+        
+        <script>
+            function myFunction() {
+                var x = document.getElementById("myDIV");
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                }
+            }
+        </script>
     </body>
 </html>
