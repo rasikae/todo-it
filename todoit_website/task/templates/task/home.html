@@ -19,11 +19,11 @@
         </div>
 
         <div class = "sidenav">
-            <div id="myDIV" style = "display: none">
                 <ul id="projectList">
-                    <li> <span style="color:black">Project 1</span></li>
+                    {% for result in projects %}
+                    <li> <span style="color:black">{{ result.title }}</span></li>
+                    {% endfor %}
                 </ul><!--Below needs to be modified for project. Right now it also opens new task-->
-            </div>
             <button onclick="document.getElementById('id02').style.display='block'"><img src="{% static 'task/images/plus.png' %}" width=25% height=25% align="left" padding-right="1px"></button>
         </div>
 
@@ -59,7 +59,7 @@
 
                 {% csrf_token %}
                 {{ form }}
-                <input type="submit" value="Submit" />
+                <input name="tasksubmit" type="submit" value="Submit" />
                 <button onclick="document.getElementById('id03').style.display = 'block'" type="button">></button>
               </div>
              </form>
@@ -69,43 +69,14 @@
 
         <div id="id02" class="modal">
             <div class="container">
+              <form action="home" method="post">
               <h2><span class="h2">
                   New Project
               </span></h2>
-
-              <label for="title"><b>Title</b></label><br/>
-              <input type="text" placeholder="Enter Title" name="title" required> <br/><br/>
-
-              <label for="duedate"><b>&nbsp Due Date</b></label>
-              <input type="date" name="duedate" required> <br/><br/>
-
-              <label for="progress"><b>Progress</b></label>
-              <select name="progress">
-                  <option value="notstarted">Not Started</option>
-                  <option value="inprogress">In Progress</option>
-                  <option value="done">Done</option>
-                </select>
-                <br/> <br/>
-
-               <label for="parentProject"><b>Project</b></label>
-                  <select name="project">
-                  <option value="Project 1">Project 1</option>
-                  <option value="Project 2">Project 2</option>
-                  <option value="Project 3">Project 3</option>
-                </select>
-                <br/> <br/>
-
-              <label for="desc"><b>Description</b></label><br/>
-              <div class = "description">
-                  <input type="text" placeholder="Enter Description" name="desc" required><br/><br/>
-              </div>
-
-              <label><b>Tags</b></label><br/><br/>
-
-              <div align="right">
-                <button type="submit" onclick="myFunction()">Done</button>
-                <button type="button">></button>
-              </div>
+                {% csrf_token %}
+                {{ form2 }}
+                <input name='projectsubmit' type="submit" value="Submit" />
+                </form>
             </div>
         </div>
 
