@@ -20,51 +20,34 @@
         </div>
 
         <div class = "sidenav">
-            <ul id="projectList">
-            </ul><!--Below needs to be modified for project. Right now it also opens new task-->
+            <div id="myDIV" style = "display: none">
+                <ul id="projectList">
+                    <li> <span style="color:black">Project 1</span></li>
+                </ul><!--Below needs to be modified for project. Right now it also opens new task-->
+            </div>
             <button onclick="document.getElementById('id02').style.display='block'"><img src="{% static 'task/images/plus.png' %}" width=25% height=25% align="left" padding-right="1px"></button>
         </div>
 
         <div class = "mainWindow">
             <button onclick="document.getElementById('id01').style.display='block'"><img src="{% static 'task/images/plus.png' %}" width=25% height=25% align="right"></button>
+           {% block tasks %} {% endblock %}
         </div>
 
 
 
         <div id="id01" class="modal">
             <div class="container">
+             <form action="hometask" method="post">
               <h2><span class="h2">
                   New Task
               </span></h2>
 
-              <label for="title"><b>Title</b></label><br/>
-              <input type="text" placeholder="Enter Title" name="title" required> <br/><br/>
-
-              <label for="dodate"><b>Do Date</b></label>
-              <input type="date" name="dodate" required>
-
-              <label for="duedate"><b>&nbsp Due Date</b></label>
-              <input type="date" name="duedate" required> <br/><br/>
-
-              <label for="progress"><b>Progress</b></label>
-              <select name="progress">
-                  <option value="notstarted">Not Started</option>
-                  <option value="inprogress">In Progress</option>
-                  <option value="done">Done</option>
-                </select>
-                <br/> <br/>
-
-              <label for="desc"><b>Description</b></label><br/>
-              <div class = "description">
-                  <input type="text" placeholder="Enter Description" name="desc" required><br/><br/>
-              </div>
-
-              <label><b>Tags</b></label><br/><br/>
-
-              <div align="right">
-                <button type="submit">Done</button>
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="Submit" />
                 <button onclick="document.getElementById('id03').style.display = 'block'" type="button">></button>
               </div>
+             </form>
             </div>
         </div>
 
@@ -105,12 +88,12 @@
               <label><b>Tags</b></label><br/><br/>
 
               <div align="right">
-                <button type="submit">Done</button>
+                <button type="submit" onclick="myFunction()">Done</button>
                 <button type="button">></button>
               </div>
             </div>
         </div>
-        
+
         <div id="id03" class="modal">
             <div class="container">
               <h2><span class="h2">
@@ -147,6 +130,77 @@
               </div>
             </div>
         </div>
-    <script type = "text/javascript" src="{% static 'task/js/home.js' %}"></script>
+
+        
+        <script>
+            function myFunction() {
+                var x = document.getElementById("myDIV");
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                } 
+                // else {
+                //     x.style.display = "none";
+                // }   
+                var y = document.getElementById("id02");
+                if (y.style.display === "block") {
+                    y.style.display = "none";
+                }
+
+              <label for="dodate"><b>Do Date</b></label>
+              <input type="date" name="dodate" required>
+
+              <label for="duedate"><b>&nbsp Due Date</b></label>
+              <input type="date" name="duedate" required> <br/><br/>
+
+              <label for="progress"><b>Progress</b></label>
+              <select name="progress">
+                  <option value="notstarted">Not Started</option>
+                  <option value="inprogress">In Progress</option>
+                  <option value="done">Done</option>
+                </select>
+                <br/> <br/>
+
+              <label for="desc"><b>Description</b></label><br/>
+              <div class = "description">
+                  <input type="text" placeholder="Enter Description" name="desc" required><br/><br/>
+              </div>
+
+              <label><b>Tags</b></label><br/><br/>
+
+              <div align="right">
+                <button type="submit">Done</button>
+                <button onclick='foo();' type="button">></button>
+              </div>
+            </div>
+        </div>
+        <script>
+            function myFunction() {
+                var x = document.getElementById("myDIV");
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                } 
+                // else {
+                //     x.style.display = "none";
+                // }   
+                var y = document.getElementById("id02");
+                if (y.style.display === "block") {
+                    y.style.display = "none";
+                }
+            }
+            function newTask() {
+                var x = document.getElementById("myTasks");
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                } 
+                // else {
+                //     x.style.display = "none";
+                // }   
+                var y = document.getElementById("id01");
+                if (y.style.display === "block") {
+                    y.style.display = "none";
+                }
+            }
+        </script>
+        <script type = "text/javascript" src="{% static 'task/js/home.js' %}"></script>
     </body>
 </html>
