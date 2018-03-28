@@ -29,6 +29,17 @@
 
         <div class = "mainWindow">
             <button onclick="document.getElementById('id01').style.display='block'"><img src="{% static 'task/images/plus.png' %}" width=25% height=25% align="right"></button>
+            <!--<h5><span style="font-weight: normal">Project 1</span></h5>-->
+            <p>
+                <div id="myTasks" style = "display: none">
+                     <ul id="taskList">
+                        <form action="">
+                            <li> <input type="checkbox" name="task" value="1">Acquire sprint schedule<br></li>
+                            <li> <input type="checkbox" name="task" value="2">Read sprint guidelines<br></li>
+                        </form>
+                    </ul>
+                </div>
+            </p>
         </div>
 
 
@@ -64,7 +75,7 @@
               <label><b>Tags</b></label><br/><br/>
 
               <div align="right">
-                <button type="submit">Done</button>
+                 <button type="submit" onclick="newTask()">Done</button>
                 <button onclick="document.getElementById('id03').style.display = 'block'" type="button">></button>
               </div>
             </div>
@@ -164,9 +175,19 @@
                 if (y.style.display === "block") {
                     y.style.display = "none";
                 }
-                // } else {
-                //     y.style.display = "none";
-                // }  
+            }
+            function newTask() {
+                var x = document.getElementById("myTasks");
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                } 
+                // else {
+                //     x.style.display = "none";
+                // }   
+                var y = document.getElementById("id01");
+                if (y.style.display === "block") {
+                    y.style.display = "none";
+                }
             }
         </script>
 
