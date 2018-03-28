@@ -5,6 +5,7 @@ from .forms import taskform
 from .models import Task
 from django.contrib.auth.decorators import login_required
 
+
 # Create your views here.
 
 def login_user(request):
@@ -27,6 +28,7 @@ def login(request):
 # @login_required
 def home(request):
     # if this is a POST request we need to process the form data
+    Task.objects.all().delete()
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         #if projectsubmit
@@ -40,7 +42,7 @@ def home(request):
             newtask.do_date=form.cleaned_data['dodate']
             newtask.due_date=form.cleaned_data['duedate']
             newtask.progress=form.cleaned_data['progress']
-            newtask.desc=form.cleaned_data['desc']
+            newtask.description=form.cleaned_data['description']
             newtask.save()
             results=Task.objects.all()
             return render(request, 'task/home.html', {'tasks':results,'form': form})
@@ -48,5 +50,6 @@ def home(request):
     # if a GET (or any other method) we'll create a blank form
     else:
         form = taskform()
+
     results=Task.objects.all()
     return render(request, 'task/home.html', {'tasks':results, 'form': form})
