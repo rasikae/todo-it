@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% extends "task/home.html" %}
+{% block tasks %}
+         {% for result in tasks %}
+         <div class="subprojects">
+                    <header class="subprojects-title">
+                        <!--<span onclick="document.getElementById('id01').style.display='none'"
+                        class="w3-button w3-display-topright">&times;</span>-->
+                    <h2>{{result.title}}</h2>
+                    </header>
+                    <div class="subprojects-content">
+                        Do-Date: {{result.do_date}}<br/>
+                        Due-Date: {{result.due_date}}<br/>
+                        Progress: {{result.progress}}<br/>
+                        Description: {{result.desc}}<br/>
+                        <ul id="taskList">
+                </div>
+            </div>
+         {% endfor %}
+{% endblock %}
