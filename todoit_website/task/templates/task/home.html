@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Todo-It</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        {% load static %}
-        <link rel="shortcut icon" href="">
-        <link rel="stylesheet" type="text/css" href="{% static 'task/css/home.css' %}">
-        <script type = "text/javascript" src="{% static 'task/js/home.js' %}"></script>
+      <title>Todo-It</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      {% load static %}
+      <link rel="shortcut icon" href="">
+      <link rel="stylesheet" type="text/css" href="{% static 'task/css/home.css' %}">
     </head>
 
     <body>
@@ -15,6 +14,7 @@
             <div class="active">
                 <a class="active" href="home.html"><img src="{% static 'task/images/arrow.png' %}" height =25px width=25px></a>
                 <input type="text" placeholder="Search">
+               <!-- Use this to show username: https://docs.djangoproject.com/en/dev/topics/auth/default/#users -->
                 <a class="active" href="{% url 'login' %}"> <img src="{% static 'task/images/user.png' %}" height=40px width=40px align="right"></a>
             </div>
         </div>
@@ -147,6 +147,6 @@
               </div>
             </div>
         </div>
-
+    <script type = "text/javascript" src="{% static 'task/js/home.js' %}"></script>
     </body>
 </html>

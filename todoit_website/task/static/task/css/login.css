@@ -3,7 +3,6 @@ body {
   margin: 0;
   font-family: "roboto", sans-serif;
 }
-/* @import url(https://fonts.googleapis.com/css?family=Roboto:300); */
   
 /* box outline/padding */
 .login-page {
@@ -46,7 +45,6 @@ body {
   -webkit-transition: all 0.3 ease;
   transition: all 0.3 ease;
   cursor: pointer;
-
 }
 
 .form .message {
@@ -58,6 +56,7 @@ body {
   color: #a61c02;
   text-decoration: none;
 }
+
 .form .register-form {
   display: none;
 }
