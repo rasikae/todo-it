@@ -29,14 +29,30 @@
 
         <div class = "mainWindow">
             <button onclick="document.getElementById('id01').style.display='block'"><img src="{% static 'task/images/plus.png' %}" width=25% height=25% align="right"></button>
-           {% block tasks %} {% endblock %}
+           
+             {% for result in tasks %}
+             <div class="subprojects">
+                        <header class="subprojects-title">
+                            <!--<span onclick="document.getElementById('id01').style.display='none'"
+                            class="w3-button w3-display-topright">&times;</span>-->
+                        <h2>{{result.title}}</h2>
+                        </header>
+                        <div class="subprojects-content">
+                            Do-Date: {{result.do_date}}<br/>
+                            Due-Date: {{result.due_date}}<br/>
+                            Progress: {{result.progress}}<br/>
+                            Description: {{result.desc}}<br/>
+                            <ul id="taskList">
+                    </div>
+                </div>
+             {% endfor %}
         </div>
 
 
 
         <div id="id01" class="modal">
             <div class="container">
-             <form action="hometask" method="post">
+             <form action="home" method="post">
               <h2><span class="h2">
                   New Task
               </span></h2>
