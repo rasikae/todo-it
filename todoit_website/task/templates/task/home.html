@@ -36,7 +36,20 @@
 
         <div class = "mainWindow">
             <button onclick="document.getElementById('id01').style.display='block'"><img src="{% static 'task/images/plus.png' %}" width=25% height=25% align="right"></button>
+            
+            <button onclick="document.getElementById('sortadded').style.display='block';document.getElementById('sorttitle').style.display='none';
+            document.getElementById('sortdo').style.display='none';document.getElementById('sortdue').style.display='none'">Date Added</button>
            
+            <button onclick="document.getElementById('sortadded').style.display='none';document.getElementById('sorttitle').style.display='block';
+            document.getElementById('sortdo').style.display='none';document.getElementById('sortdue').style.display='none'">Title</button>
+           
+            <button onclick="document.getElementById('sortadded').style.display='none';document.getElementById('sorttitle').style.display='none';
+            document.getElementById('sortdo').style.display='block';document.getElementById('sortdue').style.display='none'">Do-Date</button>
+           
+            <button onclick="document.getElementById('sortadded').style.display='none';document.getElementById('sorttitle').style.display='none';
+            document.getElementById('sortdo').style.display='none';document.getElementById('sortdue').style.display='block'">Sort By: Due-Date</button>
+             
+             <div id="sortadded" class = "sortadded">
              {% for result in tasks %}
              <div class="subprojects">
                         <header class="subprojects-title">
@@ -53,6 +66,61 @@
                     </div>
                 </div>
              {% endfor %}
+             </div>
+             <div id="sorttitle" class="sorttitle">
+             {% for result in tasks|dictsort:"title" %}
+             <div class="subprojects">
+                        <header class="subprojects-title">
+                            <!--<span onclick="document.getElementById('id01').style.display='none'"
+                            class="w3-button w3-display-topright">&times;</span>-->
+                        <h2>{{result.title}}</h2>
+                        </header>
+                        <div class="subprojects-content">
+                            Do-Date: {{result.do_date}}<br/>
+                            Due-Date: {{result.due_date}}<br/>
+                            Progress: {{result.progress}}<br/>
+                            Description: {{result.description}}<br/>
+                            <ul id="taskList">
+                    </div>
+                </div>
+             {% endfor %}
+             </div>
+             <div id="sortdo" class = "sortdo">
+             {% for result in tasks|dictsort:"do_date" %}
+             <div class="subprojects">
+                        <header class="subprojects-title">
+                            <!--<span onclick="document.getElementById('id01').style.display='none'"
+                            class="w3-button w3-display-topright">&times;</span>-->
+                        <h2>{{result.title}}</h2>
+                        </header>
+                        <div class="subprojects-content">
+                            Do-Date: {{result.do_date}}<br/>
+                            Due-Date: {{result.due_date}}<br/>
+                            Progress: {{result.progress}}<br/>
+                            Description: {{result.description}}<br/>
+                            <ul id="taskList">
+                        </div>
+              </div>
+             {% endfor %}
+             </div>
+             <div id="sortdue" class = "sortdue">
+             {% for result in tasks|dictsort:"due_date" %}
+             <div class="subprojects">
+                        <header class="subprojects-title">
+                            <!--<span onclick="document.getElementById('id01').style.display='none'"
+                            class="w3-button w3-display-topright">&times;</span>-->
+                        <h2>{{result.title}}</h2>
+                        </header>
+                        <div class="subprojects-content">
+                            Do-Date: {{result.do_date}}<br/>
+                            Due-Date: {{result.due_date}}<br/>
+                            Progress: {{result.progress}}<br/>
+                            Description: {{result.description}}<br/>
+                            <ul id="taskList">
+                    </div>
+              </div>
+             {% endfor %}
+             </div>
         </div>
 
 
@@ -89,38 +157,16 @@
 
         <div id="id03" class="modal">
             <div class="container">
+              <form action="home" method="post">
               <h2><span class="h2">
                   New Subtask
               </span></h2>
-
-              <label for="title"><b>Title</b></label><br/>
-              <input type="text" placeholder="Enter Title" name="title" required> <br/><br/>
-
-              <label for="dodate"><b>Do Date</b></label>
-              <input type="date" name="dodate" required>
-
-              <label for="duedate"><b>&nbsp Due Date</b></label>
-              <input type="date" name="duedate" required> <br/><br/>
-
-              <label for="progress"><b>Progress</b></label>
-              <select name="progress">
-                  <option value="notstarted">Not Started</option>
-                  <option value="inprogress">In Progress</option>
-                  <option value="done">Done</option>
-                </select>
-                <br/> <br/>
-
-              <label for="desc"><b>Description</b></label><br/>
-              <div class = "description">
-                  <input type="text" placeholder="Enter Description" name="desc" required><br/><br/>
-              </div>
-
-              <label><b>Tags</b></label><br/><br/>
-
+                {% csrf_token %}
+                {{ form3 }}
               <div align="right">
-                <button type="submit">Done</button>
-                <button onclick='foo();' type="button">></button>
+                <input name="subtasksubmit" type="submit" value="Submit">
               </div>
+              </form>
             </div>
         </div>
 

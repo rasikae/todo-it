@@ -6,6 +6,7 @@ from .forms import taskform
 from .forms import projectform
 from .forms import registerform
 from .forms import loginform
+from .forms import subtaskform
 from .models import Task
 from .models import User
 from django.contrib.auth.decorators import login_required
@@ -14,7 +15,8 @@ from .models import Project
 
 def login(request):
     print("HELLO3")
-    # User.objects.all().delete()
+    print(request)
+    User.objects.all().delete()
     if request.method=='POST':
       print("HELLO4")
       if 'loginbutton' in request.POST:
@@ -44,25 +46,28 @@ def login(request):
               template='task/home.html'
               form = taskform()
               form2 = projectform()
+              form3 = subtaskform()
               tasks=Task.objects.all()
               projects=Project.objects.all()
-              return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2})
+              users=User.objects.all()
+              return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3})
           
     cform=registerform()
     lform=loginform()
 
     return render(request,'task/login.html',{"registerform":cform,"loginform":lform})
 
-   
+
 # @login_required
 def home(request):
     # if this is a POST request we need to process the form data
-    # Task.objects.all().delete()
+    Task.objects.all().delete()
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         if 'tasksubmit' in request.POST:
             form = taskform(request.POST)
             form2 = projectform()
+            form3=subtaskform()
             # check whether it's valid:
             if form.is_valid():
                 # process the data in form.cleaned_data as required
@@ -76,10 +81,12 @@ def home(request):
                 newtask.save()
                 tasks=Task.objects.all()
                 projects=Project.objects.all()
-                return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2})
+                users=User.objects.all()
+                return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3})
         elif 'projectsubmit' in request.POST:
             form = taskform()
             form2 = projectform(request.POST)
+            form3=subtaskform()
             # check whether it's valid:
             if form2.is_valid():
                 # process the data in form.cleaned_data as required
@@ -91,15 +98,22 @@ def home(request):
                 tasks=Task.objects.all()
                 projects=Project.objects.all()
                 users=User.objects.all()
-                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2})
+                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3})
+        elif 'subtasksubmit' in request.POST:
+            form = taskform()
+            form2 = projectform()
+            form3 = subtaskform(request.POST)
+            if form3.is_valid():
+                tasks=Task.objects.all()
+                projects=Project.objects.all()
+                users=User.objects.all()
+                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3})
             
             
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = taskform()
-        form2 = projectform()
     form = taskform()
     form2 = projectform()
+    form3 = subtaskform()
     tasks=Task.objects.all()
     projects=Project.objects.all()
-    return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2})
+    users=User.objects.all()
+    return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3})
