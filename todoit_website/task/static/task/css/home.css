@@ -168,3 +168,12 @@ body {
     list-style: none;
     color: black;
 }
+.sorttitle{
+    display: none;
+}
+.sortdo{
+     display: none;
+}
+.sortdue{
+     display: none;
+}
