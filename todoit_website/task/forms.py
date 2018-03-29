@@ -11,4 +11,13 @@ class taskform(forms.Form):
 class projectform(forms.Form):
     title = forms.CharField(label='Title', max_length=128)
     duedate = forms.DateTimeField(label='Due-Date')
-   
+
+class createform(forms.Form):
+    name=forms.CharField(label='Name', max_length=128)
+    email=forms.EmailField(label='Email', max_length=128)
+    password=forms.CharField(label='Password', max_length=128)
+    
+class loginform(forms.Form):
+    email=forms.EmailField(label='Email', max_length=128)
+    password=forms.CharField(label='Password', max_length=128)
+

@@ -15,7 +15,13 @@
                 <a class="active" href="home"><img src="{% static 'task/images/arrow.png' %}" height =25px width=25px></a>
                 <input type="text" placeholder="Search">
                <!-- Use this to show username: https://docs.djangoproject.com/en/dev/topics/auth/default/#users -->
+                {% if messages %}
+                  {% for message in messages %}
+                  {{ message }}
+                  {% endfor %}
+                {% endif %}
                 <a class="active" href="{% url 'login' %}"> <img src="{% static 'task/images/user.png' %}" height=40px width=40px align="right"></a>
+                
             </div>
         </div>
 

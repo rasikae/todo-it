@@ -6,7 +6,8 @@ class User(models.Model):
    # uID = models.CharField(max_length=100, blank=True, unique=True, default=uuid.uuid4)
    # iD = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
    name = models.CharField(max_length=128) #temp max length
-   email = models.EmailField(max_length=254)
+   email = models.EmailField(unique=True, max_length=254)
+   #password=models.CharField(max_length=128)
 
 class Project(models.Model):
    # pID=models.CharField(max_length=100, blank=True, unique=True, default=uuid.uuid4)

@@ -10,16 +10,13 @@
   <body>
     <div class="login-page">
       <div id="form" class="form">
-        <form id="register" action="{% url 'login' %}" class="register-form">
-          <input type="text" placeholder="first name"/>
-          <input type="text" placeholder="last name"/>
-          <input type="text" placeholder="username"/>
-          <input type="password" placeholder="password"/>
-          <!-- <input type="text" placeholder="email address"/> -->
-          <button>create</button>
+        <form id="register" action="" class="register" method=post>
+          {% csrf_token %}
+          {{signupform}}
+          <input name='create' type="submit" value="Create" />
           <p class="message">Already registered? <a id="signinID" href="#">Sign In</a></p>
         </form>
-        <form id="loginfid" action="{% url 'home' %}" class="login-form">
+        <form id="loginfid" action="{% url 'home' %}" class="loginfid">
           <input type="text" placeholder="username"/>
           <input type="password" placeholder="password"/>
           <button id="loginid">login</button>
