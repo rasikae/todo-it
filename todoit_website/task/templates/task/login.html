@@ -1,7 +1,6 @@
 <!--Referenced from https://codepen.io/colorlib/pen/rxddKy -->
 
 <!DOCTYPE html>
-
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,10 +10,12 @@
   <body>
     <div class="login-page">
       <div id="form" class="form">
-        <form id="register" class="register-form">
-          <input type="text" placeholder="name"/>
+        <form id="register" action="{% url 'login' %}" class="register-form">
+          <input type="text" placeholder="first name"/>
+          <input type="text" placeholder="last name"/>
+          <input type="text" placeholder="username"/>
           <input type="password" placeholder="password"/>
-          <input type="text" placeholder="email address"/>
+          <!-- <input type="text" placeholder="email address"/> -->
           <button>create</button>
           <p class="message">Already registered? <a id="signinID" href="#">Sign In</a></p>
         </form>
@@ -22,12 +23,10 @@
           <input type="text" placeholder="username"/>
           <input type="password" placeholder="password"/>
           <button id="loginid">login</button>
-          <p class="message">Not registered? <a id="createID" href="#">Create an account</a></p>
+          <p class="message">Not registered? <a id="registerID" href="#">Create an account</a></p>
         </form>
       </div>
     </div>
     <script type = "text/javascript" src="{% static 'task/js/login.js' %}"></script>
   </body>
 </html>
-
-<!--  -->
