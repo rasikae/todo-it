@@ -6,16 +6,21 @@ document.getElementById("loginid").onclick = function(){
 	document.getElementById("loginfid").action("{% url 'home' %}");
 };
 
-document.getElementById("messageID").onclick = function(){
-	// alert("alert.id");
-	var x = document.getElementById("form");
-	alert("alert.id");
-	x.classList.toggle("form");
-	// x.animate({height: "toggle", opacity: "toggle"}, "slow"); //should 
-	alert("alert.id");
+document.getElementById("signinID").onclick = function(){
+	var r = document.getElementById("register");
+	var l = document.getElementById("loginfid");
 
+	r.style.display = "none"
+	l.style.display = "block";
 };
 
+document.getElementById("createID").onclick = function(){
+	var r = document.getElementById("register");
+	var l = document.getElementById("loginfid");
+
+	l.style.display = "none"
+	r.style.display = "block";
+};
 
 // $('.message a').click(function(){
 //    $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
