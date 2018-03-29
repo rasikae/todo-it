@@ -13,11 +13,12 @@
         <form id="register" action="" class="register" method=post>
           {% csrf_token %}
           {{registerform}}
-          <button id="registerbutton" name="registerbutton" type="submit">register</button>
+          <button id="registerid" name="registerbutton" type="submit">register</button>
           <!-- <input name='create' type="submit" value="Create" /> -->
           <p class="message">Already registered? <a id="signinID" href="#">Sign In</a></p>
         </form>
-        <form id="loginfid" action="" class="loginfid">
+        <form id="loginfid" action="" class="loginfid" method=post>
+          {% csrf_token %}
           {{loginform}}
           <button id="loginid" name="loginbutton" type="submit">login</button>
           <p class="message">Not registered? <a id="registerID" href="#">Create an account</a></p>

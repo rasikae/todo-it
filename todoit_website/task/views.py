@@ -16,19 +16,25 @@ from .models import Project
 def login(request):
     print("HELLO3")
     print(request)
-    User.objects.all().delete()
+    # User.objects.all().delete()
     if request.method=='POST':
       print("HELLO4")
       if 'loginbutton' in request.POST:
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(username=username,password=password)
-        if user is not None:
-        	if user.is_active:
-        		login(request,user)
-        		messages.success(request,email)
-        		template='task/home.html'
-        		return HttpResponseRedirect('home')
+      	print("in here 1")
+      	tryform=loginform(request.POST)
+      	if tryform.is_valid():
+	        username = tryform.cleaned_data['username']
+	        password = tryform.cleaned_data['password']
+       		print("in here 2")
+	        user = authenticate(username=username,password=password)
+	        print(user)
+	        if user is not None:
+	        	print("hello")
+	        	if user.is_active:
+	        		login(request,user)
+	        		messages.success(request,email)
+	        		template='task/home.html'
+	        		return HttpResponseRedirect('home')
                 
       elif 'registerbutton' in request.POST:
           print("HELLO1")
@@ -41,6 +47,8 @@ def login(request):
               newuser.password=signupform.cleaned_data['password']
               print("gets here")
               newuser.save()
+              print(newuser.username)
+              print(newuser.password)
               print("and here")
               messages.success(request,newuser.email)
               template='task/home.html'
@@ -58,7 +66,7 @@ def login(request):
     return render(request,'task/login.html',{"registerform":cform,"loginform":lform})
 
 
-# @login_required
+@login_required
 def home(request):
     # if this is a POST request we need to process the form data
     Task.objects.all().delete()
