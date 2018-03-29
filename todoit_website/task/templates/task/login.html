@@ -12,14 +12,14 @@
       <div id="form" class="form">
         <form id="register" action="" class="register" method=post>
           {% csrf_token %}
-          {{signupform}}
-          <input name='create' type="submit" value="Create" />
+          {{registerform}}
+          <button id="registerbutton" name="registerbutton" type="submit">register</button>
+          <!-- <input name='create' type="submit" value="Create" /> -->
           <p class="message">Already registered? <a id="signinID" href="#">Sign In</a></p>
         </form>
         <form id="loginfid" action="{% url 'home' %}" class="loginfid">
-          <input type="text" placeholder="username"/>
-          <input type="password" placeholder="password"/>
-          <button id="loginid">login</button>
+          {{loginform}}
+          <button id="loginid" name="loginbutton" type="submit">login</button>
           <p class="message">Not registered? <a id="registerID" href="#">Create an account</a></p>
         </form>
       </div>

@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from .forms import taskform
 from .forms import projectform
-from .forms import createform
+from .forms import registerform
 from .forms import loginform
 from .models import Task
 from .models import User
@@ -12,39 +12,34 @@ from django.contrib.auth.decorators import login_required
 from .models import Project
 # Create your views here.
 
-def login_user(request):
-	if request.POST:
-		username = request.POST.get('username')
-		password = request.POST.get('password')
-		user = authenticate(username=username,password=password)
-		print(username)
-		if user is not None:
-			if user.is_active:
-				login(request,user)
-				return HttpResponseRedirect("home")
-
 def login(request):
     print("HELLO3")
+    # User.objects.all().delete()
     if request.method=='POST':
       print("HELLO4")
-      if 'login' in request.POST:
-        email = request.POST.get('email')
+      if 'loginbutton' in request.POST:
+        username = request.POST.get('username')
         password = request.POST.get('password')
-        user = authenticate(email=email,password=password)
+        user = authenticate(username=username,password=password)
         if user is not None:
         	if user.is_active:
         		login(request,user)
         		messages.success(request,email)
         		template='task/home.html'
+        		return HttpResponseRedirect('home')
                 
-      elif 'create' in request.POST:
+      elif 'registerbutton' in request.POST:
           print("HELLO1")
-          signupform=createform(request.POST)
+          signupform=registerform(request.POST)
           if signupform.is_valid():
               newuser=User(email=signupform.cleaned_data['email'])
+              newuser.first_name=signupform.cleaned_data['firstname']
+              newuser.last_name=signupform.cleaned_data['lastname']
+              newuser.username=signupform.cleaned_data['username']
               newuser.password=signupform.cleaned_data['password']
-              newuser.name=signupform.cleaned_data['name']
+              print("gets here")
               newuser.save()
+              print("and here")
               messages.success(request,newuser.email)
               template='task/home.html'
               form = taskform()
@@ -53,10 +48,10 @@ def login(request):
               projects=Project.objects.all()
               return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2})
           
-          
-    cform=createform()
+    cform=registerform()
     lform=loginform()
-    return render(request,'task/login.html',{"signupform":cform,"loginform":lform})
+
+    return render(request,'task/login.html',{"registerform":cform,"loginform":lform})
 
    
 # @login_required

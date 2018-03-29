@@ -1,7 +1,6 @@
 from django import forms
 
 class taskform(forms.Form):
-		# iD = forms.UUIDField(label='ID', max_length=100)
     title = forms.CharField(label='Title', max_length=128)
     dodate = forms.DateTimeField(label='Do-Date')
     duedate = forms.DateTimeField(label='Due-Date')
@@ -12,12 +11,15 @@ class projectform(forms.Form):
     title = forms.CharField(label='Title', max_length=128)
     duedate = forms.DateTimeField(label='Due-Date')
 
-class createform(forms.Form):
-    name=forms.CharField(label='Name', max_length=128)
-    email=forms.EmailField(label='Email', max_length=128)
-    password=forms.CharField(label='Password', max_length=128)
+class registerform(forms.Form):
+    firstname=forms.CharField(label='',max_length=128,widget=forms.TextInput(attrs={'placeholder':'First Name'}))
+    lastname=forms.CharField(label='',max_length=128,widget=forms.TextInput(attrs={'placeholder':'Last Name'}))
+    email=forms.EmailField(label='',max_length=128,widget=forms.TextInput(attrs={'placeholder':'Email'}))
+    username=forms.CharField(label='',max_length=128,widget=forms.TextInput(attrs={'placeholder':'Username'}))
+    password=forms.CharField(label='',max_length=128,widget=forms.TextInput(attrs={'placeholder':'Password'}))
     
 class loginform(forms.Form):
-    email=forms.EmailField(label='Email', max_length=128)
-    password=forms.CharField(label='Password', max_length=128)
+    # email=forms.EmailField(max_length=128,widget=forms.TextInput(attrs={'placeholder':'First Name'}))
+    username=forms.CharField(label='',max_length=128,widget=forms.TextInput(attrs={'placeholder':'Username'}))
+    password=forms.CharField(label='',max_length=128,widget=forms.TextInput(attrs={'placeholder':'Password','type':'password'}))
 
