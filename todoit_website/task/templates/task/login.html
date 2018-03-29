@@ -17,7 +17,7 @@
           <!-- <input name='create' type="submit" value="Create" /> -->
           <p class="message">Already registered? <a id="signinID" href="#">Sign In</a></p>
         </form>
-        <form id="loginfid" action="" class="loginfid" method=post>
+        <form id="loginfid" action="{% url 'home' %}" class="loginfid" method=post>
           {% csrf_token %}
           {{loginform}}
           <button id="loginid" name="loginbutton" type="submit">login</button>

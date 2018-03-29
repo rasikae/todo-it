@@ -66,10 +66,10 @@ def login(request):
     return render(request,'task/login.html',{"registerform":cform,"loginform":lform})
 
 
-@login_required
+# @login_required
 def home(request):
     # if this is a POST request we need to process the form data
-    Task.objects.all().delete()
+    # Task.objects.all().delete()
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         if 'tasksubmit' in request.POST:
