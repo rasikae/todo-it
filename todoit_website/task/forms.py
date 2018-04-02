@@ -33,5 +33,3 @@ class loginform(forms.Form):
     # email = forms.EmailField(max_length=128,widget=forms.TextInput(attrs={'placeholder':'First Name'}))
     username = forms.CharField(label='',max_length=128,widget=forms.TextInput(attrs={'placeholder':'Username'}))
     password = forms.CharField(label='',max_length=128,widget=forms.TextInput(attrs={'placeholder':'Password','type':'password'}))
- 
-

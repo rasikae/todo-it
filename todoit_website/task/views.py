@@ -81,16 +81,33 @@ def login(request):
                     users = User.objects.all()
                     return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3})
 
+              print("User saved")
+
+              messages.success(request,newuser.email)
+
+              # simpling doing this does the same as below..?
+              # return HttpResponseRedirect('home')
+
+              form = taskform()
+              form2 = projectform()
+              form3 = subtaskform()
+
+              tasks = Task.objects.all()
+              projects = Project.objects.all()
+              users = User.objects.all()
+
+              return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3})
+          
     cform = registerform()
     lform = loginform()
 
     return render(request,'task/login.html',{"registerform":cform,"loginform":lform})
 
 
-# @login_required
+@login_required
 def home(request):
+    # Task.objects.all().delete() # deletes all task objects
     # if this is a POST request we need to process the form data
-    # Task.objects.all().delete()
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         if 'tasksubmit' in request.POST:
