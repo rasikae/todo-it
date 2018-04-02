@@ -23,14 +23,15 @@ class projectform(forms.Form):
     # parent = forms.CharField(label='Parent', max_length=128)
 
 class registerform(forms.Form):
-    firstname=forms.CharField(label='',max_length=128,widget=forms.TextInput(attrs={'placeholder':'First Name'}))
-    lastname=forms.CharField(label='',max_length=128,widget=forms.TextInput(attrs={'placeholder':'Last Name'}))
-    email=forms.EmailField(label='',max_length=128,widget=forms.TextInput(attrs={'placeholder':'Email'}))
-    username=forms.CharField(label='',max_length=128,widget=forms.TextInput(attrs={'placeholder':'Username'}))
-    password=forms.CharField(label='',max_length=128,widget=forms.TextInput(attrs={'placeholder':'Password'}))
+    firstname = forms.CharField(label='',max_length=128,widget=forms.TextInput(attrs={'placeholder':'First Name'}))
+    lastname = forms.CharField(label='',max_length=128,widget=forms.TextInput(attrs={'placeholder':'Last Name'}))
+    email = forms.EmailField(label='',max_length=128,widget=forms.TextInput(attrs={'placeholder':'Email'}))
+    username = forms.CharField(label='',max_length=128,widget=forms.TextInput(attrs={'placeholder':'Username'}))
+    password = forms.CharField(label='',max_length=128,widget=forms.TextInput(attrs={'placeholder':'Password'}))
     
 class loginform(forms.Form):
-    # email=forms.EmailField(max_length=128,widget=forms.TextInput(attrs={'placeholder':'First Name'}))
-    username=forms.CharField(label='',max_length=128,widget=forms.TextInput(attrs={'placeholder':'Username'}))
-    password=forms.CharField(label='',max_length=128,widget=forms.TextInput(attrs={'placeholder':'Password','type':'password'}))
+    # email = forms.EmailField(max_length=128,widget=forms.TextInput(attrs={'placeholder':'First Name'}))
+    username = forms.CharField(label='',max_length=128,widget=forms.TextInput(attrs={'placeholder':'Username'}))
+    password = forms.CharField(label='',max_length=128,widget=forms.TextInput(attrs={'placeholder':'Password','type':'password'}))
+ 
 

@@ -104,6 +104,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
 
+AUTH_USER_MODEL = 'task.User'
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
@@ -130,6 +132,3 @@ STATICFILES_DIRS = (
 )
 
 LOGIN_URL = 'login'
-
-
-AUTH_USER_MODEL = 'task.User'
