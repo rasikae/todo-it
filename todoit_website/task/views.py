@@ -21,7 +21,7 @@ from .models import Project
 def login(request):
     print("HELLO3")
     print(request)
-    #User.objects.all().delete()
+    # User.objects.all().delete()
     if request.method=='POST':
       print("HELLO4")
       if 'loginbutton' in request.POST:
@@ -74,7 +74,7 @@ def login(request):
     return render(request,'task/login.html',{"registerform":cform,"loginform":lform})
 
 
-# @login_required
+@login_required
 def home(request):
     # if this is a POST request we need to process the form data
     # Task.objects.all().delete()
