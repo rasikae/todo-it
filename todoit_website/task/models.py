@@ -1,12 +1,13 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 import uuid
 
 # Create your models here.
-class User(models.Model):
+class User(AbstractUser):
    firstname=models.CharField(max_length=128)
    lastname=models.CharField(max_length=128)
    email=models.EmailField(unique=True,max_length=128)
-   username=models.CharField(max_length=128)
+   username=models.CharField(unique=True,max_length=128)
    password=models.CharField(max_length=128)
 
 class Project(models.Model):
