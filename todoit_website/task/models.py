@@ -14,7 +14,7 @@ class Project(models.Model):
    title = models.CharField(unique=True,max_length=128) #temp max length 
    description = models.CharField(max_length=300, default='Add a description')
    due_date = models.DateTimeField(auto_now=False,auto_now_add=False) #can also be just DateField
-   relates_to = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
+   parent = models.CharField(max_length=128, null=True)
    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
 class Task(models.Model):
@@ -25,5 +25,5 @@ class Task(models.Model):
    due_date = models.DateTimeField(auto_now=False,auto_now_add=False) #can also be just DateField
    is_sub = models.BooleanField(default=False)
    parent = models.CharField(max_length=128, null=True)
-   relates_to = models.ForeignKey('self',on_delete=models.CASCADE,null=True)
+   project = models.CharField(max_length=128, null=True)
    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)

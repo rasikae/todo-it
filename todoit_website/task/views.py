@@ -125,6 +125,7 @@ def home(request):
                 newtask.progress = form.cleaned_data['progress']
                 newtask.description = form.cleaned_data['description']
                 newtask.project = form.cleaned_data['project']
+                print(newtask.project)
                 newtask.is_sub = False
                 newtask.user = request.user
                 newtask.save()
@@ -132,7 +133,7 @@ def home(request):
                 projects = Project.objects.all().filter(user = request.user)
                 users = User.objects.all()
                 form = taskform()
-                return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3})
+                return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":""})
         elif 'projectsubmit' in request.POST:
             form = taskform()
             form2 = projectform(request.POST)
@@ -151,7 +152,7 @@ def home(request):
                 projects = Project.objects.all().filter(user = request.user)
                 users = User.objects.all()
                 form2 = projectform()
-                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3})
+                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":""})
         elif 'subtasksubmit' in request.POST:
             form = taskform()
             form2 = projectform()
@@ -171,7 +172,7 @@ def home(request):
                 projects = Project.objects.all().filter(user = request.user)
                 users = User.objects.all()
                 form3 = subtaskform()
-                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3})
+                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3,"currentproject":""})
             
             
     form = taskform()
@@ -180,4 +181,105 @@ def home(request):
     tasks = Task.objects.all().filter(user = request.user)
     projects = Project.objects.all().filter(user = request.user)
     users = User.objects.all()
-    return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3})
+    return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3,"currentproject":""})
+    
+def home2(request, project):
+    # Task.objects.all().delete() # deletes all task objects
+    # if this is a POST request we need to process the form data
+    if request.method=='GET':
+        form = taskform()
+        form2 = projectform()
+        form3 = subtaskform()
+        if not project:
+            tasks = Task.objects.all().filter(user = request.user)
+            projects = Project.objects.all().filter(user = request.user)
+            users = User.objects.all()
+            form = taskform()
+            print("NOT GOOD")
+            return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":project})
+        else:
+            # now you have the value of sku
+            # so you can continue with the rest
+            print("YOU DID IT")
+            tasks = Task.objects.all().filter(user = request.user)
+            projects = Project.objects.all().filter(user = request.user)
+            users = User.objects.all()
+            form = taskform()
+            return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":project})
+     # Task.objects.all().delete() # deletes all task objects
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        if 'tasksubmit' in request.POST:
+            form = taskform(request.POST)
+            form2 = projectform()
+            form3 = subtaskform()
+            # check whether it's valid:
+            if form.is_valid():
+                # process the data in form.cleaned_data as required
+                # ...
+                # redirect to a new URL:
+                newtask = Task(title = form.cleaned_data['title'])
+                newtask.do_date = form.cleaned_data['dodate']
+                newtask.due_date = form.cleaned_data['duedate']
+                newtask.progress = form.cleaned_data['progress']
+                newtask.description = form.cleaned_data['description']
+                newtask.project = form.cleaned_data['project']
+                print(newtask.project)
+                newtask.is_sub = False
+                newtask.user = request.user
+                newtask.save()
+                tasks = Task.objects.all().filter(user = request.user)
+                projects = Project.objects.all().filter(user = request.user)
+                users = User.objects.all()
+                form = taskform()
+                return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":""})
+        elif 'projectsubmit' in request.POST:
+            form = taskform()
+            form2 = projectform(request.POST)
+            form3 = subtaskform()
+            # check whether it's valid:
+            if form2.is_valid():
+                # process the data in form.cleaned_data as required
+                # ...
+                # redirect to a new URL:
+                newpro = Project(title = form2.cleaned_data['title'])
+                newpro.due_date = form2.cleaned_data['duedate']
+                newpro.parent = form2.cleaned_data['parent']
+                newpro.user = request.user
+                newpro.save()
+                tasks = Task.objects.all().filter(user = request.user)
+                projects = Project.objects.all().filter(user = request.user)
+                users = User.objects.all()
+                form2 = projectform()
+                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":""})
+        elif 'subtasksubmit' in request.POST:
+            form = taskform()
+            form2 = projectform()
+            form3 = subtaskform(request.POST)
+            if form3.is_valid():
+                newtask = Task(title = form3.cleaned_data['title'])
+                newtask.do_date = form3.cleaned_data['dodate']
+                newtask.due_date = form3.cleaned_data['duedate']
+                newtask.progress = form3.cleaned_data['progress']
+                newtask.description = form3.cleaned_data['description']
+                newtask.project = form3.cleaned_data['project']
+                newtask.parent = form3.cleaned_data['parent']
+                newtask.is_sub = True
+                newtask.user = request.user
+                newtask.save()
+                tasks = Task.objects.all().filter(user = request.user)
+                projects = Project.objects.all().filter(user = request.user)
+                users = User.objects.all()
+                form3 = subtaskform()
+                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3,"currentproject":""})
+            
+            
+    form = taskform()
+    form2 = projectform()
+    form3 = subtaskform()
+    tasks = Task.objects.all().filter(user = request.user)
+    projects = Project.objects.all().filter(user = request.user)
+    users = User.objects.all()
+    return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3,"currentproject":""})
+    
