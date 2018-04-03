@@ -11,7 +11,7 @@ class User(AbstractUser):
    password = models.CharField(max_length=128)
 
 class Project(models.Model):
-   title = models.CharField(unique=True,max_length=128) #temp max length 
+   title = models.CharField(max_length=128) #temp max length ,  unique=True,
    description = models.CharField(max_length=300, default='Add a description')
    due_date = models.DateTimeField(auto_now=False,auto_now_add=False) #can also be just DateField
    parent = models.CharField(max_length=128, null=True)
