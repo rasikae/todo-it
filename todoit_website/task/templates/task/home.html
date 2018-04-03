@@ -49,6 +49,7 @@
              
              <div id="sortadded" class = "sortadded">
              {% for result in tasks %}
+             {% if not result.is_sub %}
              <div class="subprojects">
                         <header class="subprojects-title">
                             <!--<span onclick="document.getElementById('id01').style.display='none'"
@@ -60,10 +61,21 @@
                             Due-Date: {{result.due_date}}<br/>
                             Progress: {{result.progress}}<br/>
                             Description: {{result.description}}<br/>
-                            User: {{result.user.username}}
+                            User: {{result.user.username}}<br/>
+                            
+                            Subtasks: 
+                            {% for result2 in tasks %}
+                                {% if result2.is_sub %}
+                                    {{result2.project}}
+                                    {% if result2.parent == result.title %}
+                                        {{result2.title}}<br/>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
                             <ul id="taskList">
                     </div>
                 </div>
+            {% endif %}
              {% endfor %}
              </div>
              <div id="sorttitle" class="sorttitle">
@@ -79,7 +91,16 @@
                             Due-Date: {{result.due_date}}<br/>
                             Progress: {{result.progress}}<br/>
                             Description: {{result.description}}<br/>
-                            User: {{result.user.username}}
+                            User: {{result.user.username}}<br>
+                            
+                            Subtasks: 
+                            {% for result2 in tasks %}
+                                {% if result2.is_sub %}
+                                    {% if result2.parent == result.title %}
+                                        {{result2.title}}<br/>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
                             <ul id="taskList">
                     </div>
                 </div>
@@ -98,7 +119,16 @@
                             Due-Date: {{result.due_date}}<br/>
                             Progress: {{result.progress}}<br/>
                             Description: {{result.description}}<br/>
-                            User: {{result.user.username}}
+                            User: {{result.user.username}}<br/>
+                            
+                            Subtasks: 
+                            {% for result2 in tasks %}
+                                {% if result2.is_sub %}
+                                    {% if result2.parent == result.title %}
+                                        {{result2.title}}<br/>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
                             <ul id="taskList">
                         </div>
               </div>
@@ -117,7 +147,16 @@
                             Due-Date: {{result.due_date}}<br/>
                             Progress: {{result.progress}}<br/>
                             Description: {{result.description}}<br/>
-                            User: {{result.user.username}}
+                            User: {{result.user.username}}<br/>
+                            
+                            Subtasks: 
+                            {% for result2 in tasks %}
+                                {% if result2.is_sub %}
+                                    {% if result2.parent == result.title %}
+                                        {{result2.title}}<br/>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
                             <ul id="taskList">
                     </div>
               </div>

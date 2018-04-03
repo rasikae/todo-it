@@ -124,6 +124,7 @@ def home(request):
                 newtask.due_date = form.cleaned_data['duedate']
                 newtask.progress = form.cleaned_data['progress']
                 newtask.description = form.cleaned_data['description']
+                newtask.project = form.cleaned_data['project']
                 newtask.is_sub = False
                 newtask.user = request.user
                 newtask.save()
@@ -143,6 +144,7 @@ def home(request):
                 # redirect to a new URL:
                 newpro = Project(title = form2.cleaned_data['title'])
                 newpro.due_date = form2.cleaned_data['duedate']
+                newpro.parent = form2.cleaned_data['parent']
                 newpro.user = request.user
                 newpro.save()
                 tasks = Task.objects.all().filter(user = request.user)
@@ -155,6 +157,16 @@ def home(request):
             form2 = projectform()
             form3 = subtaskform(request.POST)
             if form3.is_valid():
+                newtask = Task(title = form3.cleaned_data['title'])
+                newtask.do_date = form3.cleaned_data['dodate']
+                newtask.due_date = form3.cleaned_data['duedate']
+                newtask.progress = form3.cleaned_data['progress']
+                newtask.description = form3.cleaned_data['description']
+                newtask.project = form3.cleaned_data['project']
+                newtask.parent = form3.cleaned_data['parent']
+                newtask.is_sub = True
+                newtask.user = request.user
+                newtask.save()
                 tasks = Task.objects.all().filter(user = request.user)
                 projects = Project.objects.all().filter(user = request.user)
                 users = User.objects.all()
