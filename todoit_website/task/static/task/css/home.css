@@ -184,8 +184,11 @@ body {
     display: none;
 }
 .sortdo{
-     display: none;
+    display: none;
 }
 .sortdue{
-     display: none;
+    display: none;
+}
+.weekly{
+    display: none;
 }

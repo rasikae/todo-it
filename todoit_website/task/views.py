@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.contrib import messages
+import datetime
+from datetime import timedelta
 from django.http import HttpResponseRedirect
 from .forms import taskform
 from .forms import projectform
@@ -76,10 +78,14 @@ def login(request):
                     form = taskform()
                     form2 = projectform()
                     form3 = subtaskform()
+                    date = datetime.date.today()
+                    start_week = date - datetime.timedelta(date.weekday())
+                    end_week = start_week + datetime.timedelta(7)
+                    weekly = Task.objects.filter(due_date__range=[start_week, end_week])
                     tasks = Task.objects.all().filter(user = request.user)
                     projects = Project.objects.all().filter(user = request.user)
                     users = User.objects.all()
-                    return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3})
+                    return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"weekly":weekly})
 
               print("User saved")
 
@@ -91,12 +97,15 @@ def login(request):
               form = taskform()
               form2 = projectform()
               form3 = subtaskform()
-
+              date = datetime.date.today()
+              start_week = date - datetime.timedelta(date.weekday())
+              end_week = start_week + datetime.timedelta(7)
+              weekly = Task.objects.filter(due_date__range=[start_week, end_week])
               tasks = Task.objects.all()
               projects = Project.objects.all()
               users = User.objects.all()
 
-              return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3})
+              return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"weekly":weekly})
           
     cform = registerform()
     lform = loginform()
@@ -129,11 +138,15 @@ def home(request):
                 newtask.is_sub = False
                 newtask.user = request.user
                 newtask.save()
+                date = datetime.date.today()
+                start_week = date - datetime.timedelta(date.weekday())
+                end_week = start_week + datetime.timedelta(7)
+                weekly = Task.objects.filter(due_date__range=[start_week, end_week])
                 tasks = Task.objects.all().filter(user = request.user)
                 projects = Project.objects.all().filter(user = request.user)
                 users = User.objects.all()
                 form = taskform()
-                return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":""})
+                return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":"","weekly":weekly})
         elif 'projectsubmit' in request.POST:
             form = taskform()
             form2 = projectform(request.POST)
@@ -148,11 +161,15 @@ def home(request):
                 newpro.parent = form2.cleaned_data['parent']
                 newpro.user = request.user
                 newpro.save()
+                date = datetime.date.today()
+                start_week = date - datetime.timedelta(date.weekday())
+                end_week = start_week + datetime.timedelta(7)
+                weekly = Task.objects.filter(due_date__range=[start_week, end_week])
                 tasks = Task.objects.all().filter(user = request.user)
                 projects = Project.objects.all().filter(user = request.user)
                 users = User.objects.all()
                 form2 = projectform()
-                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":""})
+                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":"","weekly":weekly})
         elif 'subtasksubmit' in request.POST:
             form = taskform()
             form2 = projectform()
@@ -168,20 +185,28 @@ def home(request):
                 newtask.is_sub = True
                 newtask.user = request.user
                 newtask.save()
+                date = datetime.date.today()
+                start_week = date - datetime.timedelta(date.weekday())
+                end_week = start_week + datetime.timedelta(7)
+                weekly = Task.objects.filter(due_date__range=[start_week, end_week])
                 tasks = Task.objects.all().filter(user = request.user)
                 projects = Project.objects.all().filter(user = request.user)
                 users = User.objects.all()
                 form3 = subtaskform()
-                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3,"currentproject":""})
+                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3,"currentproject":"","weekly":weekly})
             
             
     form = taskform()
     form2 = projectform()
     form3 = subtaskform()
+    date = datetime.date.today()
+    start_week = date - datetime.timedelta(date.weekday())
+    end_week = start_week + datetime.timedelta(7)
+    weekly = Task.objects.filter(due_date__range=[start_week, end_week])
     tasks = Task.objects.all().filter(user = request.user)
     projects = Project.objects.all().filter(user = request.user)
     users = User.objects.all()
-    return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3,"currentproject":""})
+    return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3,"currentproject":"","weekly":weekly})
     
 def home2(request, project):
     # Task.objects.all().delete() # deletes all task objects
@@ -191,21 +216,29 @@ def home2(request, project):
         form2 = projectform()
         form3 = subtaskform()
         if not project:
+            date = datetime.date.today()
+            start_week = date - datetime.timedelta(date.weekday())
+            end_week = start_week + datetime.timedelta(7)
+            weekly = Task.objects.filter(due_date__range=[start_week, end_week])
             tasks = Task.objects.all().filter(user = request.user)
             projects = Project.objects.all().filter(user = request.user)
             users = User.objects.all()
             form = taskform()
             print("NOT GOOD")
-            return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":project})
+            return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":project,"weekly":weekly})
         else:
             # now you have the value of sku
             # so you can continue with the rest
             print("YOU DID IT")
+            date = datetime.date.today()
+            start_week = date - datetime.timedelta(date.weekday())
+            end_week = start_week + datetime.timedelta(7)
+            weekly = Task.objects.filter(due_date__range=[start_week, end_week])
             tasks = Task.objects.all().filter(user = request.user)
             projects = Project.objects.all().filter(user = request.user)
             users = User.objects.all()
             form = taskform()
-            return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":project})
+            return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":project,"weekly":weekly})
      # Task.objects.all().delete() # deletes all task objects
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
@@ -229,11 +262,15 @@ def home2(request, project):
                 newtask.is_sub = False
                 newtask.user = request.user
                 newtask.save()
+                date = datetime.date.today()
+                start_week = date - datetime.timedelta(date.weekday())
+                end_week = start_week + datetime.timedelta(7)
+                weekly = Task.objects.filter(due_date__range=[start_week, end_week])
                 tasks = Task.objects.all().filter(user = request.user)
                 projects = Project.objects.all().filter(user = request.user)
                 users = User.objects.all()
                 form = taskform()
-                return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":""})
+                return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":"","weekly":weekly})
         elif 'projectsubmit' in request.POST:
             form = taskform()
             form2 = projectform(request.POST)
@@ -248,11 +285,15 @@ def home2(request, project):
                 newpro.parent = form2.cleaned_data['parent']
                 newpro.user = request.user
                 newpro.save()
+                date = datetime.date.today()
+                start_week = date - datetime.timedelta(date.weekday())
+                end_week = start_week + datetime.timedelta(7)
+                weekly = Task.objects.filter(due_date__range=[start_week, end_week])
                 tasks = Task.objects.all().filter(user = request.user)
                 projects = Project.objects.all().filter(user = request.user)
                 users = User.objects.all()
                 form2 = projectform()
-                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":""})
+                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":"","weekly":weekly})
         elif 'subtasksubmit' in request.POST:
             form = taskform()
             form2 = projectform()
@@ -268,18 +309,26 @@ def home2(request, project):
                 newtask.is_sub = True
                 newtask.user = request.user
                 newtask.save()
+                date = datetime.date.today()
+                start_week = date - datetime.timedelta(date.weekday())
+                end_week = start_week + datetime.timedelta(7)
+                weekly = Task.objects.filter(due_date__range=[start_week, end_week])
                 tasks = Task.objects.all().filter(user = request.user)
                 projects = Project.objects.all().filter(user = request.user)
                 users = User.objects.all()
                 form3 = subtaskform()
-                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3,"currentproject":""})
+                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3,"currentproject":"","weekly":weekly})
             
             
     form = taskform()
     form2 = projectform()
     form3 = subtaskform()
+    date = datetime.date.today()
+    start_week = date - datetime.timedelta(date.weekday())
+    end_week = start_week + datetime.timedelta(7)
+    weekly = Task.objects.filter(due_date__range=[start_week, end_week])
     tasks = Task.objects.all().filter(user = request.user)
     projects = Project.objects.all().filter(user = request.user)
     users = User.objects.all()
-    return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3,"currentproject":""})
+    return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3,"currentproject":"","weekly":weekly})
     
