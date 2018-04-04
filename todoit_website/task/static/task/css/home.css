@@ -192,3 +192,6 @@ body {
 .weekly{
     display: none;
 }
+.daily {
+    display: none;
+}
