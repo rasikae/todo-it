@@ -4,6 +4,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib import messages
 import datetime
 from datetime import timedelta
+import os
 from django.http import HttpResponseRedirect
 from .forms import taskform
 from .forms import projectform
@@ -116,9 +117,25 @@ def login(request):
 
 
 @login_required
-def home(request):
+def home(request, delete=''):
     # Task.objects.all().delete() # deletes all task objects
     # if this is a POST request we need to process the form data
+    if request.method == 'GET':
+        Task.objects.filter(title=request.GET.get('delete',False))
+        form = taskform()
+        form2 = projectform()
+        form3 = subtaskform()
+        date = datetime.date.today()
+        start_week = date - datetime.timedelta(date.weekday())
+        end_week = start_week + datetime.timedelta(7)
+        weekly = Task.objects.filter(due_date__range=[start_week, end_week])
+        daily = Task.objects.filter(due_date__date=datetime.date.today())
+        tasks = Task.objects.all().filter(user = request.user)
+        projects = Project.objects.all().filter(user = request.user)
+        users = User.objects.all()
+        form = taskform()
+        return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":"","weekly":weekly,"daily":daily})
+        
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         if 'tasksubmit' in request.POST:
@@ -136,7 +153,6 @@ def home(request):
                 newtask.progress = form.cleaned_data['progress']
                 newtask.description = form.cleaned_data['description']
                 newtask.project = form.cleaned_data['project']
-                print(newtask.project)
                 newtask.is_sub = False
                 newtask.user = request.user
                 newtask.save()
@@ -221,7 +237,9 @@ def home2(request, project):
         form = taskform()
         form2 = projectform()
         form3 = subtaskform()
-        if not project:
+        if '/' in project:
+            task=os.path.basename(project)
+            Task.objects.filter(title=task).delete()
             date = datetime.date.today()
             start_week = date - datetime.timedelta(date.weekday())
             end_week = start_week + datetime.timedelta(7)
@@ -231,12 +249,20 @@ def home2(request, project):
             projects = Project.objects.all().filter(user = request.user)
             users = User.objects.all()
             form = taskform()
-            print("NOT GOOD")
+            return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":"","weekly":weekly,"daily":daily})
+
+        elif not project:
+            date = datetime.date.today()
+            start_week = date - datetime.timedelta(date.weekday())
+            end_week = start_week + datetime.timedelta(7)
+            weekly = Task.objects.filter(due_date__range=[start_week, end_week])
+            daily = Task.objects.filter(due_date__date=datetime.date.today())
+            tasks = Task.objects.all().filter(user = request.user)
+            projects = Project.objects.all().filter(user = request.user)
+            users = User.objects.all()
+            form = taskform()
             return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":project,"weekly":weekly,"daily":daily})
         else:
-            # now you have the value of sku
-            # so you can continue with the rest
-            print("YOU DID IT")
             date = datetime.date.today()
             start_week = date - datetime.timedelta(date.weekday())
             end_week = start_week + datetime.timedelta(7)
@@ -266,7 +292,6 @@ def home2(request, project):
                 newtask.progress = form.cleaned_data['progress']
                 newtask.description = form.cleaned_data['description']
                 newtask.project = form.cleaned_data['project']
-                print(newtask.project)
                 newtask.is_sub = False
                 newtask.user = request.user
                 newtask.save()
@@ -343,4 +368,3 @@ def home2(request, project):
     projects = Project.objects.all().filter(user = request.user)
     users = User.objects.all()
     return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3,"currentproject":"","weekly":weekly,"daily":daily})
-    
