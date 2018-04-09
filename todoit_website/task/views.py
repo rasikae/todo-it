@@ -10,6 +10,7 @@ from .forms import taskform
 from .forms import projectform
 from .forms import registerform
 from .forms import loginform
+from .forms import collabform
 from django.utils import timezone
 from .forms import subtaskform
 from .models import Task
@@ -56,7 +57,7 @@ def login(request):
               newuser.last_name = registerform_req.cleaned_data['lastname']
               newuser.username = registerform_req.cleaned_data['username']
               newuser.password = registerform_req.cleaned_data['password']
-
+              newuser.collab = ""
               newuser.set_password(registerform_req.cleaned_data['password'])
               
               print("User created but not saved")
@@ -86,8 +87,10 @@ def login(request):
                     daily = Task.objects.filter(due_date__date=datetime.date.today())
                     tasks = Task.objects.all().filter(user = request.user)
                     projects = Project.objects.all().filter(user = request.user)
-                    users = User.objects.all()
-                    return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"weekly":weekly,"daily":daily})
+                    collabs = request.user.collab.replace(' ','').split(',')
+                    users1 = User.objects.filter(username__in=collabs)
+                    users = Task.objects.filter(user__in=users1)
+                    return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"weekly":weekly,"daily":daily})
 
               print("User saved")
 
@@ -106,9 +109,10 @@ def login(request):
               daily = Task.objects.filter(due_date__date=datetime.date.today())
               tasks = Task.objects.all()
               projects = Project.objects.all()
-              users = User.objects.all()
-
-              return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"weekly":weekly,"daily":daily})
+              collabs = request.user.collab.replace(' ','').split(',')
+              users1 = User.objects.filter(username__in=collabs)
+              users = Task.objects.filter(user__in=users1)
+              return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"weekly":weekly,"daily":daily})
           
     cform = registerform()
     lform = loginform()
@@ -125,6 +129,7 @@ def home(request, delete=''):
         form = taskform()
         form2 = projectform()
         form3 = subtaskform()
+        form4 = collabform()
         date = datetime.date.today()
         start_week = date - datetime.timedelta(date.weekday())
         end_week = start_week + datetime.timedelta(7)
@@ -132,9 +137,11 @@ def home(request, delete=''):
         daily = Task.objects.filter(due_date__date=datetime.date.today())
         tasks = Task.objects.all().filter(user = request.user)
         projects = Project.objects.all().filter(user = request.user)
-        users = User.objects.all()
+        collabs = request.user.collab.replace(' ','').split(',')
+        users1 = User.objects.filter(username__in=collabs)
+        users = Task.objects.filter(user__in=users1)
         form = taskform()
-        return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":"","weekly":weekly,"daily":daily})
+        return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,'form4': form4,"currentproject":"","weekly":weekly,"daily":daily})
         
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -142,6 +149,7 @@ def home(request, delete=''):
             form = taskform(request.POST)
             form2 = projectform()
             form3 = subtaskform()
+            form4 = collabform()
             # check whether it's valid:
             if form.is_valid():
                 # process the data in form.cleaned_data as required
@@ -163,13 +171,49 @@ def home(request, delete=''):
                 daily = Task.objects.filter(due_date__date=datetime.date.today())
                 tasks = Task.objects.all().filter(user = request.user)
                 projects = Project.objects.all().filter(user = request.user)
-                users = User.objects.all()
+                collabs = request.user.collab.replace(' ','').split(',')
+                users1 = User.objects.filter(username__in=collabs)
+                users = Task.objects.filter(user__in=users1)
                 form = taskform()
-                return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":"","weekly":weekly,"daily":daily})
+                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,'form4': form4,"currentproject":"","weekly":weekly,"daily":daily})
+        if 'collabsubmit' in request.POST:
+            form = taskform()
+            form2 = projectform()
+            form3 = subtaskform()
+            form4 = collabform(request.POST)
+            print("GOOD")
+            # check whether it's valid:
+            if form4.is_valid():
+                # process the data in form.cleaned_data as required
+                # ...
+                # redirect to a new URL:
+                collabname = form4.cleaned_data['name']
+                temp_user=User.objects.get(username=collabname)
+                print(temp_user.username)
+                print(request.user.username)
+                temp_user.collab=temp_user.collab+","+request.user.username
+                temp_user.save()
+                date = datetime.date.today()
+                start_week = date - datetime.timedelta(date.weekday())
+                end_week = start_week + datetime.timedelta(7)
+                weekly = Task.objects.filter(due_date__range=[start_week, end_week])
+                daily = Task.objects.filter(due_date__date=datetime.date.today())
+                tasks = Task.objects.all().filter(user = request.user)
+                projects = Project.objects.all().filter(user = request.user)
+                collabs = request.user.collab.replace(' ','').split(',')
+                users1 = User.objects.filter(username__in=collabs)
+                users = Task.objects.filter(user__in=users1)
+                
+                print(users)
+                print(collabs)
+                form4 = collabform()
+                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,'form4': form4,"currentproject":"","weekly":weekly,"daily":daily})
+
         elif 'projectsubmit' in request.POST:
             form = taskform()
             form2 = projectform(request.POST)
             form3 = subtaskform()
+            form4 = collabform(request.POST)
             # check whether it's valid:
             if form2.is_valid():
                 # process the data in form.cleaned_data as required
@@ -187,13 +231,16 @@ def home(request, delete=''):
                 daily = Task.objects.filter(due_date__date=datetime.date.today())
                 tasks = Task.objects.all().filter(user = request.user)
                 projects = Project.objects.all().filter(user = request.user)
-                users = User.objects.all()
+                collabs = request.user.collab.replace(' ','').split(',')
+                users1 = User.objects.filter(username__in=collabs)
+                users = Task.objects.filter(user__in=users1)
                 form2 = projectform()
-                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":"","weekly":weekly,"daily":daily})
+                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,'form4': form4,"currentproject":"","weekly":weekly,"daily":daily})
         elif 'subtasksubmit' in request.POST:
             form = taskform()
             form2 = projectform()
             form3 = subtaskform(request.POST)
+            form4 = collabform()
             if form3.is_valid():
                 newtask = Task(title = form3.cleaned_data['title'])
                 newtask.do_date = form3.cleaned_data['dodate']
@@ -212,14 +259,17 @@ def home(request, delete=''):
                 daily = Task.objects.filter(due_date__date=datetime.date.today())
                 tasks = Task.objects.all().filter(user = request.user)
                 projects = Project.objects.all().filter(user = request.user)
-                users = User.objects.all()
+                collabs = request.user.collab.replace(' ','').split(',')
+                users1 = User.objects.filter(username__in=collabs)
+                users = Task.objects.filter(user__in=users1)
                 form3 = subtaskform()
-                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3,"currentproject":"","weekly":weekly,"daily":daily})
+                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3,'form4': form4,"currentproject":"","weekly":weekly,"daily":daily})
             
             
     form = taskform()
     form2 = projectform()
     form3 = subtaskform()
+    form4 = collabform()
     date = datetime.date.today()
     start_week = date - datetime.timedelta(date.weekday())
     end_week = start_week + datetime.timedelta(7)
@@ -227,8 +277,10 @@ def home(request, delete=''):
     daily = Task.objects.filter(due_date__date=datetime.date.today())
     tasks = Task.objects.all().filter(user = request.user)
     projects = Project.objects.all().filter(user = request.user)
-    users = User.objects.all()
-    return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3,"currentproject":"","weekly":weekly,"daily":daily})
+    collabs = request.user.collab.replace(' ','').split(',')
+    users1 = User.objects.filter(username__in=collabs)
+    users = Task.objects.filter(user__in=users1)
+    return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3,'form4': form4,"currentproject":"","weekly":weekly,"daily":daily})
     
 def home2(request, project):
     # Task.objects.all().delete() # deletes all task objects
@@ -237,6 +289,7 @@ def home2(request, project):
         form = taskform()
         form2 = projectform()
         form3 = subtaskform()
+        form4 = collabform()
         if '/' in project:
             task=os.path.basename(project)
             Task.objects.filter(title=task).delete()
@@ -247,9 +300,11 @@ def home2(request, project):
             daily = Task.objects.filter(due_date__date=datetime.date.today())
             tasks = Task.objects.all().filter(user = request.user)
             projects = Project.objects.all().filter(user = request.user)
-            users = User.objects.all()
+            collabs = request.user.collab.replace(' ','').split(',')
+            users1 = User.objects.filter(username__in=collabs)
+            users = Task.objects.filter(user__in=users1)
             form = taskform()
-            return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":"","weekly":weekly,"daily":daily})
+            return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,'form4': form4,"currentproject":"","weekly":weekly,"daily":daily})
 
         elif not project:
             date = datetime.date.today()
@@ -259,9 +314,11 @@ def home2(request, project):
             daily = Task.objects.filter(due_date__date=datetime.date.today())
             tasks = Task.objects.all().filter(user = request.user)
             projects = Project.objects.all().filter(user = request.user)
-            users = User.objects.all()
+            collabs = request.user.collab.replace(' ','').split(',')
+            users1 = User.objects.filter(username__in=collabs)
+            users = Task.objects.filter(user__in=users1)
             form = taskform()
-            return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":project,"weekly":weekly,"daily":daily})
+            return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,'form4': form4,"currentproject":project,"weekly":weekly,"daily":daily})
         else:
             date = datetime.date.today()
             start_week = date - datetime.timedelta(date.weekday())
@@ -270,9 +327,11 @@ def home2(request, project):
             daily = Task.objects.filter(due_date__date=datetime.date.today())
             tasks = Task.objects.all().filter(user = request.user)
             projects = Project.objects.all().filter(user = request.user)
-            users = User.objects.all()
+            collabs = request.user.collab.replace(' ','').split(',')
+            users1 = User.objects.filter(username__in=collabs)
+            users = Task.objects.filter(user__in=users1)
             form = taskform()
-            return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":project,"weekly":weekly,"daily":daily})
+            return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,'form4': form4,"currentproject":project,"weekly":weekly,"daily":daily})
      # Task.objects.all().delete() # deletes all task objects
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
@@ -281,6 +340,7 @@ def home2(request, project):
             form = taskform(request.POST)
             form2 = projectform()
             form3 = subtaskform()
+            form4 = collabform()
             # check whether it's valid:
             if form.is_valid():
                 # process the data in form.cleaned_data as required
@@ -302,13 +362,16 @@ def home2(request, project):
                 daily = Task.objects.filter(due_date__date=datetime.date.today())
                 tasks = Task.objects.all().filter(user = request.user)
                 projects = Project.objects.all().filter(user = request.user)
-                users = User.objects.all()
+                collabs = request.user.collab.replace(' ','').split(',')
+                users1 = User.objects.filter(username__in=collabs)
+                users = Task.objects.filter(user__in=users1)
                 form = taskform()
-                return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":"","weekly":weekly,"daily":daily})
+                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,'form4': form4,"currentproject":"","weekly":weekly,"daily":daily})
         elif 'projectsubmit' in request.POST:
             form = taskform()
             form2 = projectform(request.POST)
             form3 = subtaskform()
+            form4 = collabform()
             # check whether it's valid:
             if form2.is_valid():
                 # process the data in form.cleaned_data as required
@@ -326,13 +389,16 @@ def home2(request, project):
                 daily = Task.objects.filter(due_date__date=datetime.date.today())
                 tasks = Task.objects.all().filter(user = request.user)
                 projects = Project.objects.all().filter(user = request.user)
-                users = User.objects.all()
+                collabs = request.user.collab.replace(' ','').split(',')
+                users1 = User.objects.filter(username__in=collabs)
+                users = Task.objects.filter(user__in=users1)
                 form2 = projectform()
-                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,"currentproject":"","weekly":weekly,"daily":daily})
+                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,'form4': form4,"currentproject":"","weekly":weekly,"daily":daily})
         elif 'subtasksubmit' in request.POST:
             form = taskform()
             form2 = projectform()
             form3 = subtaskform(request.POST)
+            form4 = collabform()
             if form3.is_valid():
                 newtask = Task(title = form3.cleaned_data['title'])
                 newtask.do_date = form3.cleaned_data['dodate']
@@ -351,14 +417,17 @@ def home2(request, project):
                 daily = Task.objects.filter(due_date__date=datetime.date.today())
                 tasks = Task.objects.all().filter(user = request.user)
                 projects = Project.objects.all().filter(user = request.user)
-                users = User.objects.all()
+                collabs = request.user.collab.replace(' ','').split(',')
+                users1 = User.objects.filter(username__in=collabs)
+                users = Task.objects.filter(user__in=users1)
                 form3 = subtaskform()
-                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3,"currentproject":"","weekly":weekly,"daily":daily})
+                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3,'form4': form4,"currentproject":"","weekly":weekly,"daily":daily})
             
             
     form = taskform()
     form2 = projectform()
     form3 = subtaskform()
+    form4 = collabform()
     date = datetime.date.today()
     start_week = date - datetime.timedelta(date.weekday())
     end_week = start_week + datetime.timedelta(7)
@@ -366,5 +435,7 @@ def home2(request, project):
     daily = Task.objects.filter(due_date__date=datetime.date.today())
     tasks = Task.objects.all().filter(user = request.user)
     projects = Project.objects.all().filter(user = request.user)
-    users = User.objects.all()
-    return render(request, 'task/home.html', {'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3,"currentproject":"","weekly":weekly,"daily":daily})
+    collabs = request.user.collab.replace(' ','').split(',')
+    users1 = User.objects.filter(username__in=collabs)
+    users = Task.objects.filter(user__in=users1)
+    return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3,'form4': form4,"currentproject":"","weekly":weekly,"daily":daily})
