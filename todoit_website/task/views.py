@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.contrib import messages
 import datetime
+from django.core.exceptions import ObjectDoesNotExist
 from datetime import timedelta
 import os
 from django.http import HttpResponseRedirect
@@ -188,26 +189,30 @@ def home(request, delete=''):
                 # ...
                 # redirect to a new URL:
                 collabname = form4.cleaned_data['name']
-                temp_user=User.objects.get(username=collabname)
-                print(temp_user.username)
-                print(request.user.username)
-                temp_user.collab=temp_user.collab+","+request.user.username
-                temp_user.save()
-                date = datetime.date.today()
-                start_week = date - datetime.timedelta(date.weekday())
-                end_week = start_week + datetime.timedelta(7)
-                weekly = Task.objects.filter(due_date__range=[start_week, end_week])
-                daily = Task.objects.filter(due_date__date=datetime.date.today())
-                tasks = Task.objects.all().filter(user = request.user)
-                projects = Project.objects.all().filter(user = request.user)
-                collabs = request.user.collab.replace(' ','').split(',')
-                users1 = User.objects.filter(username__in=collabs)
-                users = Task.objects.filter(user__in=users1)
-                
-                print(users)
-                print(collabs)
-                form4 = collabform()
-                return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,'form4': form4,"currentproject":"","weekly":weekly,"daily":daily})
+                try:
+                    temp_user = User.objects.get(username=collabname)
+                except ObjectDoesNotExist:
+                    temp_user = None
+                if temp_user:
+                    print(temp_user.username)
+                    print(request.user.username)
+                    temp_user.collab=temp_user.collab+","+request.user.username
+                    temp_user.save()
+                    date = datetime.date.today()
+                    start_week = date - datetime.timedelta(date.weekday())
+                    end_week = start_week + datetime.timedelta(7)
+                    weekly = Task.objects.filter(due_date__range=[start_week, end_week])
+                    daily = Task.objects.filter(due_date__date=datetime.date.today())
+                    tasks = Task.objects.all().filter(user = request.user)
+                    projects = Project.objects.all().filter(user = request.user)
+                    collabs = request.user.collab.replace(' ','').split(',')
+                    users1 = User.objects.filter(username__in=collabs)
+                    users = Task.objects.filter(user__in=users1)
+                    
+                    print(users)
+                    print(collabs)
+                    form4 = collabform()
+                    return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,'form4': form4,"currentproject":"","weekly":weekly,"daily":daily})
 
         elif 'projectsubmit' in request.POST:
             form = taskform()
@@ -367,6 +372,43 @@ def home2(request, project):
                 users = Task.objects.filter(user__in=users1)
                 form = taskform()
                 return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,'form4': form4,"currentproject":"","weekly":weekly,"daily":daily})
+        if 'collabsubmit' in request.POST:
+            form = taskform()
+            form2 = projectform()
+            form3 = subtaskform()
+            form4 = collabform(request.POST)
+            print("GOOD")
+            # check whether it's valid:
+            if form4.is_valid():
+                # process the data in form.cleaned_data as required
+                # ...
+                # redirect to a new URL:
+                collabname = form4.cleaned_data['name']
+                try:
+                    temp_user = User.objects.get(username=collabname)
+                except ObjectDoesNotExist:
+                    temp_user = None
+                if temp_user:
+                    print(temp_user.username)
+                    print(request.user.username)
+                    temp_user.collab=temp_user.collab+","+request.user.username
+                    temp_user.save()
+                    date = datetime.date.today()
+                    start_week = date - datetime.timedelta(date.weekday())
+                    end_week = start_week + datetime.timedelta(7)
+                    weekly = Task.objects.filter(due_date__range=[start_week, end_week])
+                    daily = Task.objects.filter(due_date__date=datetime.date.today())
+                    tasks = Task.objects.all().filter(user = request.user)
+                    projects = Project.objects.all().filter(user = request.user)
+                    collabs = request.user.collab.replace(' ','').split(',')
+                    users1 = User.objects.filter(username__in=collabs)
+                    users = Task.objects.filter(user__in=users1)
+                    
+                    print(users)
+                    print(collabs)
+                    form4 = collabform()
+                    return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2,"form3":form3,'form4': form4,"currentproject":"","weekly":weekly,"daily":daily})
+
         elif 'projectsubmit' in request.POST:
             form = taskform()
             form2 = projectform(request.POST)

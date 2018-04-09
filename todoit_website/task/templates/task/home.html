@@ -33,8 +33,6 @@
         </div>
 
         <div class = "mainWindow">
-            <button onclick="document.getElementById('id04').style.display='block'">Add Collaborator</button>
-
             <button onclick="document.getElementById('id01').style.display='block'"><img src="{% static 'task/images/plus.png' %}" width=25% height=25% align="right"></button>
             
             <button onclick="document.getElementById('daily').style.display='block';document.getElementById('weekly').style.display='none';document.getElementById('sortadded').style.display='none';document.getElementById('sorttitle').style.display='none';
@@ -54,6 +52,8 @@
            
             <button onclick="document.getElementById('daily').style.display='none';document.getElementById('weekly').style.display='none';document.getElementById('sortadded').style.display='none';document.getElementById('sorttitle').style.display='none';
             document.getElementById('sortdo').style.display='none';document.getElementById('sortdue').style.display='block'">Sort By: Due-Date</button>
+            
+            <button onclick="document.getElementById('id04').style.display='block'">Add Collaborator</button>
             
             {% if currentproject == "" %}
                 <b>Home</b><br/><br/>
