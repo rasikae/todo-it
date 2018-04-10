@@ -2,7 +2,7 @@ from django import forms
 PROGRESS_CHOICES = (
     ('IN PROGRESS', 'In Progress'),
     ('DONE', 'Done'),
-    ('NO STARTED', 'Not Started'),
+    ('NOT STARTED', 'Not Started'),
 )
 
 class taskform(forms.Form):

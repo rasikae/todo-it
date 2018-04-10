@@ -34,6 +34,7 @@
 
         <div class = "mainWindow">
             <button onclick="document.getElementById('id01').style.display='block'"><img src="{% static 'task/images/plus.png' %}" width=25% height=25% align="right"></button>
+            <button onclick="document.getElementById('id05').style.display='block'">Edit Task</button>
             
             <button onclick="document.getElementById('daily').style.display='block';document.getElementById('weekly').style.display='none';document.getElementById('sortadded').style.display='none';document.getElementById('sorttitle').style.display='none';
             document.getElementById('sortdo').style.display='none';document.getElementById('sortdue').style.display='none'">Day View</button> 
@@ -53,7 +54,7 @@
             <button onclick="document.getElementById('daily').style.display='none';document.getElementById('weekly').style.display='none';document.getElementById('sortadded').style.display='none';document.getElementById('sorttitle').style.display='none';
             document.getElementById('sortdo').style.display='none';document.getElementById('sortdue').style.display='block'">Sort By: Due-Date</button>
             
-            <button onclick="document.getElementById('id04').style.display='block'">Add Collaborator</button>
+             <button onclick="document.getElementById('id04').style.display='block'">Add Collaborator</button>
             
             {% if currentproject == "" %}
                 <b>Home</b><br/><br/>
@@ -77,7 +78,7 @@
                                     Subtasks: 
                                     {% for result2 in tasks %}
                                         {% if result2.is_sub %}
-                                            {{result2.project}}
+                                            
                                             {% if result2.parent == result.title %}
                                                 {{result2.title}}<br/>
                                             {% endif %}
@@ -88,7 +89,7 @@
                             </div>
                         {% endif %}
                     {% endfor %}
-                    <br/><br/><b>Shared Tasks</b><br/><br/>
+                    <br/><br/><b>Shared with You</b><br/><br/>
                     {% for result in users %}
                         {% if not result.is_sub %}
                             <div class="subprojects">
@@ -107,7 +108,7 @@
                                     Subtasks: 
                                     {% for result2 in tasks %}
                                         {% if result2.is_sub %}
-                                            {{result2.project}}
+                                            
                                             {% if result2.parent == result.title %}
                                                 {{result2.title}}<br/>
                                             {% endif %}
@@ -150,7 +151,7 @@
                             </div>
                         {% endif %}
                     {% endfor %}
-                    <br/><br/><b>Shared Tasks</b><br/><br/>
+                    <br/><br/><b>Shared with You</b><br/><br/>
                     {% for result in users|dictsort:"title" %}
                         {% if not result.is_sub %}
                             <div class="subprojects">
@@ -169,7 +170,7 @@
                                     Subtasks: 
                                     {% for result2 in tasks %}
                                         {% if result2.is_sub %}
-                                            {{result2.project}}
+                                            
                                             {% if result2.parent == result.title %}
                                                 {{result2.title}}<br/>
                                             {% endif %}
@@ -212,7 +213,7 @@
                             </div>
                         {% endif %}
                      {% endfor %}
-                     <br/><br/><b>Shared Tasks</b><br/><br/>
+                     <br/><br/><b>Shared with You</b><br/><br/>
                     {% for result in users|dictsort:"do_date" %}
                         {% if not result.is_sub %}
                             <div class="subprojects">
@@ -231,7 +232,7 @@
                                     Subtasks: 
                                     {% for result2 in tasks %}
                                         {% if result2.is_sub %}
-                                            {{result2.project}}
+                                            
                                             {% if result2.parent == result.title %}
                                                 {{result2.title}}<br/>
                                             {% endif %}
@@ -274,7 +275,7 @@
                               </div>
                           {% endif %}
                      {% endfor %}
-                     <br/><br/><b>Shared Tasks</b><br/><br/>
+                     <br/><br/><b>Shared with You</b><br/><br/>
                     {% for result in users|dictsort:"due_date" %}
                         {% if not result.is_sub %}
                             <div class="subprojects">
@@ -293,7 +294,7 @@
                                     Subtasks: 
                                     {% for result2 in tasks %}
                                         {% if result2.is_sub %}
-                                            {{result2.project}}
+                                            
                                             {% if result2.parent == result.title %}
                                                 {{result2.title}}<br/>
                                             {% endif %}
@@ -336,7 +337,7 @@
                             </div>
                         {% endif %}
                     {% endfor %}
-                    <br/><br/><b>Shared Tasks</b><br/><br/>
+                    <br/><br/><b>Shared with You</b><br/><br/>
                     {% for result in users|dictsort:"due_date" %}
                         {% if not result.is_sub %}
                             <div class="subprojects">
@@ -355,7 +356,7 @@
                                     Subtasks: 
                                     {% for result2 in tasks %}
                                         {% if result2.is_sub %}
-                                            {{result2.project}}
+                                            
                                             {% if result2.parent == result.title %}
                                                 {{result2.title}}<br/>
                                             {% endif %}
@@ -398,7 +399,7 @@
                             </div>
                         {% endif %}
                     {% endfor %}
-                    <br/><br/><b>Shared Tasks</b><br/><br/>
+                    <br/><br/><b>Shared with You</b><br/><br/>
                     {% for result in users|dictsort:"due_date" %}
                         {% if not result.is_sub %}
                             <div class="subprojects">
@@ -417,7 +418,7 @@
                                     Subtasks: 
                                     {% for result2 in tasks %}
                                         {% if result2.is_sub %}
-                                            {{result2.project}}
+                                            
                                             {% if result2.parent == result.title %}
                                                 {{result2.title}}<br/>
                                             {% endif %}
@@ -453,7 +454,7 @@
                                         Subtasks: 
                                         {% for result2 in tasks %}
                                             {% if result2.is_sub %}
-                                                {{result2.project}}
+                                                
                                                 {% if result2.parent == result.title %}
                                                     {{result2.title}}<br/>
                                                 {% endif %}
@@ -463,36 +464,6 @@
                                     </div>
                                 </div>
                             {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                    <br/><br/><b>Shared Tasks</b><br/><br/>
-                    {% for result in users %}
-                        {% if not result.is_sub %}
-                            <div class="subprojects">
-                                <header class="subprojects-title">
-                                    <!--<span onclick="document.getElementById('id01').style.display='none'"
-                                    class="w3-button w3-display-topright">&times;</span>-->
-                                    <h2>{{result.title}}
-                                </header>
-                                <div class="subprojects-content">
-                                    Do-Date: {{result.do_date}}<br/>
-                                    Due-Date: {{result.due_date}}<br/>
-                                    Progress: {{result.progress}}<br/>
-                                    Description: {{result.description}}<br/>
-                                    Project: {{result.project}}<br/>
-                                            
-                                    Subtasks: 
-                                    {% for result2 in tasks %}
-                                        {% if result2.is_sub %}
-                                            {{result2.project}}
-                                            {% if result2.parent == result.title %}
-                                                {{result2.title}}<br/>
-                                            {% endif %}
-                                        {% endif %}
-                                    {% endfor %}
-                                    <ul id="taskList">
-                                </div>
-                            </div>
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -528,36 +499,6 @@
                             {% endif %}
                         {% endif %}
                     {% endfor %}
-                    <br/><br/><b>Shared Tasks</b><br/><br/>
-                    {% for result in users|dictsort:"title" %}
-                        {% if not result.is_sub %}
-                            <div class="subprojects">
-                                <header class="subprojects-title">
-                                    <!--<span onclick="document.getElementById('id01').style.display='none'"
-                                    class="w3-button w3-display-topright">&times;</span>-->
-                                    <h2>{{result.title}}
-                                </header>
-                                <div class="subprojects-content">
-                                    Do-Date: {{result.do_date}}<br/>
-                                    Due-Date: {{result.due_date}}<br/>
-                                    Progress: {{result.progress}}<br/>
-                                    Description: {{result.description}}<br/>
-                                    Project: {{result.project}}<br/>
-                                            
-                                    Subtasks: 
-                                    {% for result2 in tasks %}
-                                        {% if result2.is_sub %}
-                                            {{result2.project}}
-                                            {% if result2.parent == result.title %}
-                                                {{result2.title}}<br/>
-                                            {% endif %}
-                                        {% endif %}
-                                    {% endfor %}
-                                    <ul id="taskList">
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
                 </div>
                  
                 <div id="sortdo" class = "sortdo">
@@ -591,36 +532,6 @@
                             {% endif %}
                         {% endif %}
                     {% endfor %}
-                    <br/><br/><b>Shared Tasks</b><br/><br/>
-                    {% for result in users|dictsort:"do_date" %}
-                        {% if not result.is_sub %}
-                            <div class="subprojects">
-                                <header class="subprojects-title">
-                                    <!--<span onclick="document.getElementById('id01').style.display='none'"
-                                    class="w3-button w3-display-topright">&times;</span>-->
-                                    <h2>{{result.title}}
-                                </header>
-                                <div class="subprojects-content">
-                                    Do-Date: {{result.do_date}}<br/>
-                                    Due-Date: {{result.due_date}}<br/>
-                                    Progress: {{result.progress}}<br/>
-                                    Description: {{result.description}}<br/>
-                                    Project: {{result.project}}<br/>
-                                            
-                                    Subtasks: 
-                                    {% for result2 in tasks %}
-                                        {% if result2.is_sub %}
-                                            {{result2.project}}
-                                            {% if result2.parent == result.title %}
-                                                {{result2.title}}<br/>
-                                            {% endif %}
-                                        {% endif %}
-                                    {% endfor %}
-                                    <ul id="taskList">
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
                 </div>
                 
                 <div id="sortdue" class = "sortdue">
@@ -652,36 +563,6 @@
                                     </div>
                                 </div>
                             {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                    <br/><br/><b>Shared Tasks</b><br/><br/>
-                    {% for result in users|dictsort:"due_date" %}
-                        {% if not result.is_sub %}
-                            <div class="subprojects">
-                                <header class="subprojects-title">
-                                    <!--<span onclick="document.getElementById('id01').style.display='none'"
-                                    class="w3-button w3-display-topright">&times;</span>-->
-                                    <h2>{{result.title}}
-                                </header>
-                                <div class="subprojects-content">
-                                    Do-Date: {{result.do_date}}<br/>
-                                    Due-Date: {{result.due_date}}<br/>
-                                    Progress: {{result.progress}}<br/>
-                                    Description: {{result.description}}<br/>
-                                    Project: {{result.project}}<br/>
-                                            
-                                    Subtasks: 
-                                    {% for result2 in tasks %}
-                                        {% if result2.is_sub %}
-                                            {{result2.project}}
-                                            {% if result2.parent == result.title %}
-                                                {{result2.title}}<br/>
-                                            {% endif %}
-                                        {% endif %}
-                                    {% endfor %}
-                                    <ul id="taskList">
-                                </div>
-                            </div>
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -718,36 +599,6 @@
                             {% endif %}
                         {% endif %}
                     {% endfor %}
-                    <br/><br/><b>Shared Tasks</b><br/><br/>
-                    {% for result in users|dictsort:"due_date" %}
-                        {% if not result.is_sub %}
-                            <div class="subprojects">
-                                <header class="subprojects-title">
-                                    <!--<span onclick="document.getElementById('id01').style.display='none'"
-                                    class="w3-button w3-display-topright">&times;</span>-->
-                                    <h2>{{result.title}}
-                                </header>
-                                <div class="subprojects-content">
-                                    Do-Date: {{result.do_date}}<br/>
-                                    Due-Date: {{result.due_date}}<br/>
-                                    Progress: {{result.progress}}<br/>
-                                    Description: {{result.description}}<br/>
-                                    Project: {{result.project}}<br/>
-                                            
-                                    Subtasks: 
-                                    {% for result2 in tasks %}
-                                        {% if result2.is_sub %}
-                                            {{result2.project}}
-                                            {% if result2.parent == result.title %}
-                                                {{result2.title}}<br/>
-                                            {% endif %}
-                                        {% endif %}
-                                    {% endfor %}
-                                    <ul id="taskList">
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
                 </div>
                 <div id="daily" class = "daily">
                     <b>Due Today</b><br/>
@@ -779,36 +630,6 @@
                                     </div>
                                 </div>
                             {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                    <br/><br/><b>Shared Tasks</b><br/><br/>
-                    {% for result in users|dictsort:"due_date" %}
-                        {% if not result.is_sub %}
-                            <div class="subprojects">
-                                <header class="subprojects-title">
-                                    <!--<span onclick="document.getElementById('id01').style.display='none'"
-                                    class="w3-button w3-display-topright">&times;</span>-->
-                                    <h2>{{result.title}}
-                                </header>
-                                <div class="subprojects-content">
-                                    Do-Date: {{result.do_date}}<br/>
-                                    Due-Date: {{result.due_date}}<br/>
-                                    Progress: {{result.progress}}<br/>
-                                    Description: {{result.description}}<br/>
-                                    Project: {{result.project}}<br/>
-                                            
-                                    Subtasks: 
-                                    {% for result2 in tasks %}
-                                        {% if result2.is_sub %}
-                                            {{result2.project}}
-                                            {% if result2.parent == result.title %}
-                                                {{result2.title}}<br/>
-                                            {% endif %}
-                                        {% endif %}
-                                    {% endfor %}
-                                    <ul id="taskList">
-                                </div>
-                            </div>
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -875,6 +696,22 @@
             </div>
         </div>
         
+        <div id="id05" class="modal">
+            <div class="container">
+             <form action="{% url 'home' %}" method="post">
+              <h2><span class="h2">
+                  Edit Task: Enter Title and New Details
+              </span></h2>
+
+                {% csrf_token %}
+                {{ form }}
+                <input name="taskedit" type="submit" value="Submit" />
+              </div>
+             </form>
+            </div>
+        </div>
+        
+        
         
         <script>
             function myFunction() {
@@ -888,10 +725,6 @@
                 var y = document.getElementById("id02");
                 if (y.style.display === "block") {
                     y.style.display = "none";
-                }
-                var z = document.getElementById("id04");
-                if (z.style.display === "block") {
-                    z.style.display = "none";
                 }
 
               <label for="dodate"><b>Do Date</b></label>
