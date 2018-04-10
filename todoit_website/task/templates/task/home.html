@@ -1,19 +1,19 @@
-<!DOCTYPE html>
-<html>
-    <head>
-      <title>Todo-It</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      {% load static %}
-      <link rel="shortcut icon" href="">
-      <link rel="stylesheet" type="text/css" href="{% static 'task/css/home.css' %}">
-    </head>
+<!DOCTYPE html >
+<html >
+    <head >
+      <title > Todo-It < /title >
+      <meta name = "viewport" content = "width=device-width, initial-scale=1" >
+      {% load static % }
+      <link rel = "shortcut icon" href = "" >
+      <link rel = "stylesheet" type = "text/css" href = "{% static 'task/css/home.css' %}" >
+    </head >
 
-    <body>
-        <div class="topnav">
-            <a class="active" href="{% url 'home' %}"><img src="{% static 'task/images/Logo (White).png' %}" height=90px width=200px align="left"></a>
-            <div class="active">
-                <a class="active" href="{% url 'home' %}"><img src="{% static 'task/images/arrow.png' %}" height =25px width=25px></a>
-                <input type="text" placeholder="Search">
+    <body >
+        <div class = "topnav" >
+            <a class = "active" href = "{% url 'home' %}" > <img src = "{% static 'task/images/Logo (White).png' %}" height = 90px width = 200px align = "left" > </a >
+            <div class = "active" >
+                <a class = "active" href = "{% url 'home' %}" > <img src = "{% static 'task/images/arrow.png' %}" height = 25px width = 25px > </a >
+                <input type = "text" placeholder = "Search" >
                <!-- Use this to show username: https://docs.djangoproject.com/en/dev/topics/auth/default/#users -->
                 {% if user.is_authenticated %}
                     <b>Hello {{ user.username }}!</b>       

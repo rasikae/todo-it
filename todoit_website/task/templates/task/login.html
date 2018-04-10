@@ -1,28 +1,28 @@
-<!--Referenced from https://codepen.io/colorlib/pen/rxddKy -->
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'task/css/login.css' %}">
-  </head>
-  <body>
-    <div class="login-page">
-      <div id="form" class="form">
-        <form id="register" action="" class="register" method=post>
-          {% csrf_token %}
-          {{registerform}}
-          <button id="registerid" name="registerbutton" type="submit">register</button>
-          <p class="message">Already registered? <a id="signinID" href="#">Sign In</a></p>
-        </form>
-        <form id="loginfid" action="" class="loginfid" method=post>
-          {% csrf_token %}
-          {{loginform}}
-          <button id="loginid" name="loginbutton" type="submit">login</button>
-          <p class="message">Not registered? <a id="registerID" href="#">Create an account</a></p>
-        </form>
-      </div>
-    </div>
-    <script type = "text/javascript" src="{% static 'task/js/login.js' %}"></script>
-  </body>
-</html>
+<!--Referenced from https: // codepen.io/colorlib/pen/rxddKy - ->
+<!DOCTYPE html >
+<html >
+    <head >
+        <meta name = "viewport" content = "width=device-width, initial-scale=1" >
+        { % load static % }
+        <link rel = "stylesheet" type = "text/css" href = "{% static 'task/css/login.css' %}" >
+    </head >
+    <body >
+        <div class = "login-page" >
+            <div id = "form" class = "form" >
+                <form id = "register" action = "" class = "register" method = post >
+                    { % csrf_token % }
+                    {{registerform}}
+                    <button id = "registerid" name = "registerbutton" type = "submit" > register < /button >
+                    <p class = "message" > Already registered? < a id = "signinID" href = "#" > Sign In < /a > </p >
+                </form >
+                <form id = "loginfid" action = "" class = "loginfid" method = post >
+                    { % csrf_token % }
+                    {{loginform}}
+                    <button id = "loginid" name = "loginbutton" type = "submit" > login < /button >
+                    <p class = "message" > Not registered? < a id = "registerID" href = "#" > Create an account < /a > </p >
+                </form >
+            </div >
+        </div >
+        <script type = "text/javascript" src = "{% static 'task/js/login.js' %}" > </script >
+    </body >
+</html >
