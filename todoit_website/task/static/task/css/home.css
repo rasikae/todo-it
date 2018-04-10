@@ -43,6 +43,28 @@ body {
     box-sizing: border-box;
 }
 
+.dropdown{
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.dropdown-content{
+    display: none;
+    position: absolute;
+    min-width: 160px;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    display: block;
+}
+
+.show{
+    display: block;
+}
+
 .sidenav {
     position: absolute;
     overflow: hidden;

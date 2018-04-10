@@ -21,7 +21,6 @@ def login(request):
     print("login function")
 
     # User.objects.all().delete() # deletes all users in database
-
     if request.method == 'POST':
       if 'loginbutton' in request.POST:
       	print("'loginbutton' found")
@@ -172,6 +171,10 @@ def home(request):
                 users = User.objects.all()
                 form3 = subtaskform()
                 return render(request, 'task/home.html', {'users':users,'tasks':tasks,'projects':projects,'form': form, 'form2':form2, "form3":form3})
+        elif 'logoutbutton' in request.POST:
+        	print("_logout_")
+        	logout(request)
+        	return HttpResponseRedirect('login')
             
             
     form = taskform()

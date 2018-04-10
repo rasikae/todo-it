@@ -18,15 +18,19 @@
                 {% if user.is_authenticated %}
                     <b>Hello {{ user.username }}!</b>       
                 {% endif %}
-                <a class="active" href="{% url 'login' %}"> <img src="{% static 'task/images/user.png' %}" height=40px width=40px align="right"></a>
-                
+                <div class="dropdown">
+                  <a id="user_pic"> <img src="{% static 'task/images/user.png' %}" height=40px width=40px align="right"></a>
+                  <div id="thedropdown" class="dropdown-content">
+                    <a id="thelogout" name="logoutbutton" type="submit" href="#" method=post>Logout</a>
+                  </div>
+                </div>
             </div>
         </div>
 
         <div class = "sidenav">
                 <ul id="projectList">
                     {% for result in projects %}
-                    <li> <span style="color:black">{{ result.title }}</span></li>
+                    <li> <span id="res_project" style="color:black">{{ result.title }}</span></li>
                     {% endfor %}
                 </ul><!--Below needs to be modified for project. Right now it also opens new task-->
             <button onclick="document.getElementById('id02').style.display='block'"><img src="{% static 'task/images/plus.png' %}" width=25% height=25% align="left" padding-right="1px"></button>

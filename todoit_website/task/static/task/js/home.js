@@ -15,3 +15,11 @@ window.onclick = function(event) {
         modal3.style.display = "none";
     }
 };
+
+document.getElementById('user_pic').onclick = function(){
+	document.getElementById("thedropdown").classList.toggle("show");
+}
+
+// document.getElementById('thelogout').onclick = function(){
+	
+// }
