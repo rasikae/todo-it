@@ -58,10 +58,13 @@
             <!--Following buttons change the displayed sort by displaying the selected method and hiding the others-->
             <button onclick="document.getElementById('daily').style.display='block';document.getElementById('weekly').style.display='none';document.getElementById('sortadded').style.display='none'">Day View</button> 
             <button onclick="document.getElementById('daily').style.display='none';document.getElementById('weekly').style.display='block';document.getElementById('sortadded').style.display='none'">Week View</button> 
-            <form action="{% url 'home' %}" method="post">{% csrf_token %}<input type="submit" name="sortadded" value="Date Added"></form>
-            <form action="{% url 'home' %}" method="post">{% csrf_token %}<input type="submit" name="sorttitle" value="Title"></form>
-            <form action="{% url 'home' %}" method="post">{% csrf_token %}<input type="submit" name="sortdo" value="Do-Date"></form>
-            <form action="{% url 'home' %}" method="post">{% csrf_token %}<input type="submit" name="sortdue" value="Due-Date"></form>
+            <form action="{% url 'home' %}" method="post">
+                Sort By: 
+                {% csrf_token %}
+                <input type="submit" name="sortadded" value="Date Added">
+                <input type="submit" name="sorttitle" value="Title">
+                <input type="submit" name="sortdo" value="Do-Date"><input type="submit" name="sortdue" value="Due-Date">
+            </form>
             
             <!--You can enter collaborator's username, then that user can view your tasks-->
             <button onclick="document.getElementById('id04').style.display='block'">Add Collaborator</button>
