@@ -15,10 +15,11 @@
             <a href = "{% url 'home' %}"> <img src = "{% static 'task/images/Logo (White).png' %}" height = 90px width = 200px align = "left"> </a>
             
             <div>
-                <a href = "{% url 'home' %}"> <img src = "{% static 'task/images/arrow.png' %}" height = 25px width = 25px> </a>
+                <!--
+                <a href = "{% url 'home' %}"> <img src = "{% static 'task/images/arrow.png' %}" height = 25px width = 25px> </a>-->
                 
-                <!--Search bar currently not functional-->
-                <input type = "text" placeholder = "Search">
+                <!--Search bar currently not functional
+                <input type = "text" placeholder = "Search">-->
                 
                 <!-- Displays Username if signed in -->
                 {% if user.is_authenticated %}
