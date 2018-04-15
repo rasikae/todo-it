@@ -1,4 +1,3 @@
-
 body {
     margin: 0;
     background-color: #efefef;
@@ -22,16 +21,6 @@ body {
     padding: 0 10px 0 50px; /*top, right, bottom, left*/
 }
 
-/*.topnav a:hover {
-    background-color: #aaa;
-    color: white;
-}*/
-
-/*.topnav active {
-    background-color: black;
-    color: white;
-}
-*/
 .topnav input[type=text]{
     width: 40%;
     font-family: Roboto;
@@ -78,7 +67,6 @@ body {
 
 .sidenav button{
     background-color: Transparent;
-    background-repeat:no-repeat;
     border: none;
     cursor:pointer;
     overflow: hidden;
@@ -152,10 +140,6 @@ body {
     outline:none;
     float:right;
 }
-#sidenavPlus {
-    position: fixed;
-    bottom: 0px;
-}
 
 .subprojects {
     display: inline-block;
@@ -189,19 +173,10 @@ body {
     padding-right: 16px;
 }
 
-/*.subprojects-content {
-    color: #a61c02;
-}
-*/
-
 .subprojects li {
     margin-bottom: 7px;
 }
 
-#taskList {
-    list-style: none;
-    color: black;
-}
 .sorttitle{
     display: none;
 }

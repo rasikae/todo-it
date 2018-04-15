@@ -19,7 +19,3 @@ window.onclick = function(event) {
 document.getElementById('user_pic').onclick = function(){
 	document.getElementById("thedropdown").classList.toggle("show");
 }
-
-// document.getElementById('thelogout').onclick = function(){
-	
-// }
