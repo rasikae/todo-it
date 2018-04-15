@@ -55,9 +55,13 @@
             <!--Opens new task window-->
             <button onclick="document.getElementById('id01').style.display='block'"><img src="{% static 'task/images/plus.png' %}" width=25% height=25% align="right"></button>
             
-            <!--Following buttons change the displayed sort by displaying the selected method and hiding the others-->
+            <!--Following buttons change to day or week view-->
             <button onclick="document.getElementById('daily').style.display='block';document.getElementById('weekly').style.display='none';document.getElementById('sortadded').style.display='none'">Day View</button> 
             <button onclick="document.getElementById('daily').style.display='none';document.getElementById('weekly').style.display='block';document.getElementById('sortadded').style.display='none'">Week View</button> 
+            <button onclick="document.getElementById('id04').style.display='block'">Add Collaborator</button>
+            <button onclick="document.getElementById('id05').style.display='block'">Edit Task</button>
+           
+            <!--Form for various sort methods-->
             <form action="{% url 'home' %}" method="post">
                 Sort By: 
                 {% csrf_token %}
@@ -65,12 +69,6 @@
                 <input type="submit" name="sorttitle" value="Title">
                 <input type="submit" name="sortdo" value="Do-Date"><input type="submit" name="sortdue" value="Due-Date">
             </form>
-            
-            <!--You can enter collaborator's username, then that user can view your tasks-->
-            <button onclick="document.getElementById('id04').style.display='block'">Add Collaborator</button>
-            <!--Opens edit task window-->
-            <button onclick="document.getElementById('id05').style.display='block'">Edit Task</button>
-            
             <!--Displays all tasks if there is not a selected project-->
             {% if currentproject == "" %}
                 <b>Home</b><br/><br/>
