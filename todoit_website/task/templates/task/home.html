@@ -10,9 +10,9 @@
 
     <body>
         <div class="topnav">
-            <a class="active" href="home"><img src="{% static 'task/images/Logo (White).png' %}" height=90px width=200px align="left"></a>
+            <a class="active" href="{% url 'home' %}"><img src="{% static 'task/images/Logo (White).png' %}" height=90px width=200px align="left"></a>
             <div class="active">
-                <a class="active" href="home"><img src="{% static 'task/images/arrow.png' %}" height =25px width=25px></a>
+                <a class="active" href="{% url 'home' %}"><img src="{% static 'task/images/arrow.png' %}" height =25px width=25px></a>
                 <input type="text" placeholder="Search">
                <!-- Use this to show username: https://docs.djangoproject.com/en/dev/topics/auth/default/#users -->
                 {% if user.is_authenticated %}
@@ -30,7 +30,8 @@
         <div class = "sidenav">
                 <ul id="projectList">
                     {% for result in projects %}
-                    <li> <span id="res_project" style="color:black">{{ result.title }}</span></li>
+                    <!-- <li> <span id="res_project" style="color:black">{{ result.title }}</span></li> -->
+                    <li> <span style="color:black"><a href="{% url 'projecthome' project=result.title %}" value="{{ result.title }}">{{ result.title }}</a></span></li>
                     {% endfor %}
                 </ul><!--Below needs to be modified for project. Right now it also opens new task-->
             <button onclick="document.getElementById('id02').style.display='block'"><img src="{% static 'task/images/plus.png' %}" width=25% height=25% align="left" padding-right="1px"></button>
@@ -38,141 +39,611 @@
 
         <div class = "mainWindow">
             <button onclick="document.getElementById('id01').style.display='block'"><img src="{% static 'task/images/plus.png' %}" width=25% height=25% align="right"></button>
+            <button onclick="document.getElementById('id05').style.display='block'">Edit Task</button>
             
-            <button onclick="document.getElementById('sortadded').style.display='block';document.getElementById('sorttitle').style.display='none';
+            <button onclick="document.getElementById('daily').style.display='block';document.getElementById('weekly').style.display='none';document.getElementById('sortadded').style.display='none';document.getElementById('sorttitle').style.display='none';
+            document.getElementById('sortdo').style.display='none';document.getElementById('sortdue').style.display='none'">Day View</button> 
+            
+            <button onclick="document.getElementById('daily').style.display='none';document.getElementById('weekly').style.display='block';document.getElementById('sortadded').style.display='none';document.getElementById('sorttitle').style.display='none';
+            document.getElementById('sortdo').style.display='none';document.getElementById('sortdue').style.display='none'">Week View</button> 
+            
+            <button onclick="document.getElementById('daily').style.display='none';document.getElementById('weekly').style.display='none';document.getElementById('sortadded').style.display='block';document.getElementById('sorttitle').style.display='none';
             document.getElementById('sortdo').style.display='none';document.getElementById('sortdue').style.display='none'">Date Added</button>
            
-            <button onclick="document.getElementById('sortadded').style.display='none';document.getElementById('sorttitle').style.display='block';
+            <button onclick="document.getElementById('daily').style.display='none';document.getElementById('weekly').style.display='none';document.getElementById('sortadded').style.display='none';document.getElementById('sorttitle').style.display='block';
             document.getElementById('sortdo').style.display='none';document.getElementById('sortdue').style.display='none'">Title</button>
            
-            <button onclick="document.getElementById('sortadded').style.display='none';document.getElementById('sorttitle').style.display='none';
+            <button onclick="document.getElementById('daily').style.display='none';document.getElementById('weekly').style.display='none';document.getElementById('sortadded').style.display='none';document.getElementById('sorttitle').style.display='none';
             document.getElementById('sortdo').style.display='block';document.getElementById('sortdue').style.display='none'">Do-Date</button>
            
-            <button onclick="document.getElementById('sortadded').style.display='none';document.getElementById('sorttitle').style.display='none';
+            <button onclick="document.getElementById('daily').style.display='none';document.getElementById('weekly').style.display='none';document.getElementById('sortadded').style.display='none';document.getElementById('sorttitle').style.display='none';
             document.getElementById('sortdo').style.display='none';document.getElementById('sortdue').style.display='block'">Sort By: Due-Date</button>
-             
-             <div id="sortadded" class = "sortadded">
-             {% for result in tasks %}
-             {% if not result.is_sub %}
-             <div class="subprojects">
-                        <header class="subprojects-title">
-                            <!--<span onclick="document.getElementById('id01').style.display='none'"
-                            class="w3-button w3-display-topright">&times;</span>-->
-                        <h2>{{result.title}}</h2>
-                        </header>
-                        <div class="subprojects-content">
-                            Do-Date: {{result.do_date}}<br/>
-                            Due-Date: {{result.due_date}}<br/>
-                            Progress: {{result.progress}}<br/>
-                            Description: {{result.description}}<br/>
-                            User: {{result.user.username}}<br/>
-                            
-                            Subtasks: 
-                            {% for result2 in tasks %}
-                                {% if result2.is_sub %}
-                                    {{result2.project}}
-                                    {% if result2.parent == result.title %}
-                                        {{result2.title}}<br/>
-                                    {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                            <ul id="taskList">
-                    </div>
+            
+             <button onclick="document.getElementById('id04').style.display='block'">Add Collaborator</button>
+            
+            {% if currentproject == "" %}
+                <b>Home</b><br/><br/>
+                <div id="sortadded" class = "sortadded">
+                    {% for result in tasks %}
+                        {% if not result.is_sub %}
+                            <div class="subprojects">
+                                <header class="subprojects-title">
+                                    <!--<span onclick="document.getElementById('id01').style.display='none'"
+                                    class="w3-button w3-display-topright">&times;</span>-->
+                                    <h2>{{result.title}}
+                                    <a href="{% url 'delete' delete=result.title name=result.title %}"><img src="{% static 'task/images/delete.png' %}" height=20px width=20px align="right"></a></h2>
+                                </header>
+                                <div class="subprojects-content">
+                                    Do-Date: {{result.do_date}}<br/>
+                                    Due-Date: {{result.due_date}}<br/>
+                                    Progress: {{result.progress}}<br/>
+                                    Description: {{result.description}}<br/>
+                                    Project: {{result.project}}<br/>
+                                            
+                                    Subtasks: 
+                                    {% for result2 in tasks %}
+                                        {% if result2.is_sub %}
+                                            
+                                            {% if result2.parent == result.title %}
+                                                {{result2.title}}<br/>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <ul id="taskList">
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <br/><br/><b>Shared with You</b><br/><br/>
+                    {% for result in users %}
+                        {% if not result.is_sub %}
+                            <div class="subprojects">
+                                <header class="subprojects-title">
+                                    <!--<span onclick="document.getElementById('id01').style.display='none'"
+                                    class="w3-button w3-display-topright">&times;</span>-->
+                                    <h2>{{result.title}}
+                                </header>
+                                <div class="subprojects-content">
+                                    Do-Date: {{result.do_date}}<br/>
+                                    Due-Date: {{result.due_date}}<br/>
+                                    Progress: {{result.progress}}<br/>
+                                    Description: {{result.description}}<br/>
+                                    Project: {{result.project}}<br/>
+                                            
+                                    Subtasks: 
+                                    {% for result2 in tasks %}
+                                        {% if result2.is_sub %}
+                                            
+                                            {% if result2.parent == result.title %}
+                                                {{result2.title}}<br/>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <ul id="taskList">
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                
+                <div id="sorttitle" class="sorttitle">
+                    {% for result in tasks|dictsort:"title" %}
+                        {% if not result.is_sub %}
+                            <div class="subprojects">
+                                <header class="subprojects-title">
+                                    <!--<span onclick="document.getElementById('id01').style.display='none'"
+                                    class="w3-button w3-display-topright">&times;</span>-->
+                                    <h2>{{result.title}}
+                                    <a href="{% url 'delete' delete=result.title name=result.title %}"><img src="{% static 'task/images/delete.png' %}" height=20px width=20px align="right"></a></h2>
+                                </header>
+                                <div class="subprojects-content">
+                                    Do-Date: {{result.do_date}}<br/>
+                                    Due-Date: {{result.due_date}}<br/>
+                                    Progress: {{result.progress}}<br/>
+                                    Description: {{result.description}}<br/>
+                                    Project: {{result.project}}<br/>
+                                    
+                                    Subtasks: 
+                                    {% for result2 in tasks %}
+                                        {% if result2.is_sub %}
+                                            {% if result2.parent == result.title %}
+                                                {{result2.title}}<br/>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <ul id="taskList">
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <br/><br/><b>Shared with You</b><br/><br/>
+                    {% for result in users|dictsort:"title" %}
+                        {% if not result.is_sub %}
+                            <div class="subprojects">
+                                <header class="subprojects-title">
+                                    <!--<span onclick="document.getElementById('id01').style.display='none'"
+                                    class="w3-button w3-display-topright">&times;</span>-->
+                                    <h2>{{result.title}}
+                                </header>
+                                <div class="subprojects-content">
+                                    Do-Date: {{result.do_date}}<br/>
+                                    Due-Date: {{result.due_date}}<br/>
+                                    Progress: {{result.progress}}<br/>
+                                    Description: {{result.description}}<br/>
+                                    Project: {{result.project}}<br/>
+                                            
+                                    Subtasks: 
+                                    {% for result2 in tasks %}
+                                        {% if result2.is_sub %}
+                                            
+                                            {% if result2.parent == result.title %}
+                                                {{result2.title}}<br/>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <ul id="taskList">
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                
+                <div id="sortdo" class = "sortdo">
+                    {% for result in tasks|dictsort:"do_date" %}
+                        {% if not result.is_sub %}
+                            <div class="subprojects">
+                                <header class="subprojects-title">
+                                    <!--<span onclick="document.getElementById('id01').style.display='none'"
+                                    class="w3-button w3-display-topright">&times;</span>-->
+                                    <h2>{{result.title}}
+                                    <a href="{% url 'delete' delete=result.title name=result.title %}"><img src="{% static 'task/images/delete.png' %}" height=20px width=20px align="right"></a></h2>
+                                </header>
+                                <div class="subprojects-content">
+                                    Do-Date: {{result.do_date}}<br/>
+                                    Due-Date: {{result.due_date}}<br/>
+                                    Progress: {{result.progress}}<br/>
+                                    Description: {{result.description}}<br/>
+                                    Project: {{result.project}}<br/>
+                                        
+                                    Subtasks: 
+                                    {% for result2 in tasks %}
+                                        {% if result2.is_sub %}
+                                            {% if result2.parent == result.title %}
+                                                {{result2.title}}<br/>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <ul id="taskList">
+                                </div>
+                            </div>
+                        {% endif %}
+                     {% endfor %}
+                     <br/><br/><b>Shared with You</b><br/><br/>
+                    {% for result in users|dictsort:"do_date" %}
+                        {% if not result.is_sub %}
+                            <div class="subprojects">
+                                <header class="subprojects-title">
+                                    <!--<span onclick="document.getElementById('id01').style.display='none'"
+                                    class="w3-button w3-display-topright">&times;</span>-->
+                                    <h2>{{result.title}}
+                                </header>
+                                <div class="subprojects-content">
+                                    Do-Date: {{result.do_date}}<br/>
+                                    Due-Date: {{result.due_date}}<br/>
+                                    Progress: {{result.progress}}<br/>
+                                    Description: {{result.description}}<br/>
+                                    Project: {{result.project}}<br/>
+                                            
+                                    Subtasks: 
+                                    {% for result2 in tasks %}
+                                        {% if result2.is_sub %}
+                                            
+                                            {% if result2.parent == result.title %}
+                                                {{result2.title}}<br/>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <ul id="taskList">
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                 </div>
+                 
+                 <div id="sortdue" class = "sortdue">
+                     {% for result in tasks|dictsort:"due_date" %}
+                         {% if not result.is_sub %}
+                             <div class="subprojects">
+                                <header class="subprojects-title">
+                                    <!--<span onclick="document.getElementById('id01').style.display='none'"
+                                    class="w3-button w3-display-topright">&times;</span>-->
+                                    <h2>{{result.title}}
+                                    <a href="{% url 'delete' delete=result.title name=result.title %}"><img src="{% static 'task/images/delete.png' %}" height=20px width=20px align="right"></a></h2>
+                                </header>
+                                <div class="subprojects-content">
+                                    Do-Date: {{result.do_date}}<br/>
+                                    Due-Date: {{result.due_date}}<br/>
+                                    Progress: {{result.progress}}<br/>
+                                    Description: {{result.description}}<br/>
+                                    Project: {{result.project}}<br/>
+                                    
+                                    Subtasks: 
+                                    {% for result2 in tasks %}
+                                        {% if result2.is_sub %}
+                                            {% if result2.parent == result.title %}
+                                                {{result2.title}}<br/>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <ul id="taskList">
+                                </div>
+                              </div>
+                          {% endif %}
+                     {% endfor %}
+                     <br/><br/><b>Shared with You</b><br/><br/>
+                    {% for result in users|dictsort:"due_date" %}
+                        {% if not result.is_sub %}
+                            <div class="subprojects">
+                                <header class="subprojects-title">
+                                    <!--<span onclick="document.getElementById('id01').style.display='none'"
+                                    class="w3-button w3-display-topright">&times;</span>-->
+                                    <h2>{{result.title}}
+                                </header>
+                                <div class="subprojects-content">
+                                    Do-Date: {{result.do_date}}<br/>
+                                    Due-Date: {{result.due_date}}<br/>
+                                    Progress: {{result.progress}}<br/>
+                                    Description: {{result.description}}<br/>
+                                    Project: {{result.project}}<br/>
+                                            
+                                    Subtasks: 
+                                    {% for result2 in tasks %}
+                                        {% if result2.is_sub %}
+                                            
+                                            {% if result2.parent == result.title %}
+                                                {{result2.title}}<br/>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <ul id="taskList">
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                 </div>
+                 <div id="weekly" class = "weekly">
+                    <b>Due This Week</b><br/>
+                    {% for result in weekly|dictsort:"due_date" %}
+                        {% if not result.is_sub %}
+                            <div class="subprojects">
+                                <header class="subprojects-title">
+                                    <!--<span onclick="document.getElementById('id01').style.display='none'"
+                                    class="w3-button w3-display-topright">&times;</span>-->
+                                    <h2>{{result.title}}
+                                    <a href="{% url 'delete' delete=result.title name=result.title %}"><img src="{% static 'task/images/delete.png' %}" height=20px width=20px align="right"></a></h2>
+                                </header>
+                                <div class="subprojects-content">
+                                    Do-Date: {{result.do_date}}<br/>
+                                    Due-Date: {{result.due_date}}<br/>
+                                    Progress: {{result.progress}}<br/>
+                                    Description: {{result.description}}<br/>
+                                    Project: {{result.project}}<br/>
+                                    
+                                    Subtasks: 
+                                    {% for result2 in tasks %}
+                                        {% if result2.is_sub %}
+                                            {% if result2.parent == result.title %}
+                                                {{result2.title}}<br/>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <ul id="taskList">
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <br/><br/><b>Shared with You</b><br/><br/>
+                    {% for result in users|dictsort:"due_date" %}
+                        {% if not result.is_sub %}
+                            <div class="subprojects">
+                                <header class="subprojects-title">
+                                    <!--<span onclick="document.getElementById('id01').style.display='none'"
+                                    class="w3-button w3-display-topright">&times;</span>-->
+                                    <h2>{{result.title}}
+                                </header>
+                                <div class="subprojects-content">
+                                    Do-Date: {{result.do_date}}<br/>
+                                    Due-Date: {{result.due_date}}<br/>
+                                    Progress: {{result.progress}}<br/>
+                                    Description: {{result.description}}<br/>
+                                    Project: {{result.project}}<br/>
+                                            
+                                    Subtasks: 
+                                    {% for result2 in tasks %}
+                                        {% if result2.is_sub %}
+                                            
+                                            {% if result2.parent == result.title %}
+                                                {{result2.title}}<br/>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <ul id="taskList">
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div id="daily" class = "daily">
+                    <b>Due Today</b><br/>
+                    {% for result in daily|dictsort:"due_date" %}
+                        {% if not result.is_sub %}
+                            <div class="subprojects">
+                                <header class="subprojects-title">
+                                    <!--<span onclick="document.getElementById('id01').style.display='none'"
+                                    class="w3-button w3-display-topright">&times;</span>-->
+                                    <h2>{{result.title}}
+                                    <a href="{% url 'delete' delete=result.title name=result.title %}"><img src="{% static 'task/images/delete.png' %}" height=20px width=20px align="right"></a></h2>
+                                </header>
+                                <div class="subprojects-content">
+                                    Do-Date: {{result.do_date}}<br/>
+                                    Due-Date: {{result.due_date}}<br/>
+                                    Progress: {{result.progress}}<br/>
+                                    Description: {{result.description}}<br/>
+                                    Project: {{result.project}}<br/>
+                                    
+                                    Subtasks: 
+                                    {% for result2 in tasks %}
+                                        {% if result2.is_sub %}
+                                            {% if result2.parent == result.title %}
+                                                {{result2.title}}<br/>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <ul id="taskList">
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <br/><br/><b>Shared with You</b><br/><br/>
+                    {% for result in users|dictsort:"due_date" %}
+                        {% if not result.is_sub %}
+                            <div class="subprojects">
+                                <header class="subprojects-title">
+                                    <!--<span onclick="document.getElementById('id01').style.display='none'"
+                                    class="w3-button w3-display-topright">&times;</span>-->
+                                    <h2>{{result.title}}
+                                </header>
+                                <div class="subprojects-content">
+                                    Do-Date: {{result.do_date}}<br/>
+                                    Due-Date: {{result.due_date}}<br/>
+                                    Progress: {{result.progress}}<br/>
+                                    Description: {{result.description}}<br/>
+                                    Project: {{result.project}}<br/>
+                                            
+                                    Subtasks: 
+                                    {% for result2 in tasks %}
+                                        {% if result2.is_sub %}
+                                            
+                                            {% if result2.parent == result.title %}
+                                                {{result2.title}}<br/>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <ul id="taskList">
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
             {% endif %}
-             {% endfor %}
-             </div>
-             <div id="sorttitle" class="sorttitle">
-             {% for result in tasks|dictsort:"title" %}
-             <div class="subprojects">
-                        <header class="subprojects-title">
-                            <!--<span onclick="document.getElementById('id01').style.display='none'"
-                            class="w3-button w3-display-topright">&times;</span>-->
-                        <h2>{{result.title}}</h2>
-                        </header>
-                        <div class="subprojects-content">
-                            Do-Date: {{result.do_date}}<br/>
-                            Due-Date: {{result.due_date}}<br/>
-                            Progress: {{result.progress}}<br/>
-                            Description: {{result.description}}<br/>
-                            User: {{result.user.username}}<br>
-                            
-                            Subtasks: 
-                            {% for result2 in tasks %}
-                                {% if result2.is_sub %}
-                                    {% if result2.parent == result.title %}
-                                        {{result2.title}}<br/>
-                                    {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                            <ul id="taskList">
-                    </div>
+                
+            {% if currentproject != "" %}
+                <b>{{ currentproject }}</b><br/><br/>
+                <div id="sortadded" class = "sortadded">
+                    {% for result in tasks %}
+                        {% if not result.is_sub %}
+                            {% if result.project == currentproject %}
+                                <div class="subprojects">
+                                    <header class="subprojects-title">
+                                    <!--<span onclick="document.getElementById('id01').style.display='none'"
+                                    class="w3-button w3-display-topright">&times;</span>-->
+                                        <h2>{{result.title}}
+                                    <a href="{% url 'delete' delete=result.title name=result.title %}"><img src="{% static 'task/images/delete.png' %}" height=20px width=20px align="right"></a></h2>
+                                    </header>
+                                    <div class="subprojects-content">
+                                        Do-Date: {{result.do_date}}<br/>
+                                        Due-Date: {{result.due_date}}<br/>
+                                        Progress: {{result.progress}}<br/>
+                                        Description: {{result.description}}<br/>
+                                                
+                                        Subtasks: 
+                                        {% for result2 in tasks %}
+                                            {% if result2.is_sub %}
+                                                
+                                                {% if result2.parent == result.title %}
+                                                    {{result2.title}}<br/>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        <ul id="taskList">
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 </div>
-             {% endfor %}
-             </div>
-             <div id="sortdo" class = "sortdo">
-             {% for result in tasks|dictsort:"do_date" %}
-             <div class="subprojects">
-                        <header class="subprojects-title">
-                            <!--<span onclick="document.getElementById('id01').style.display='none'"
-                            class="w3-button w3-display-topright">&times;</span>-->
-                        <h2>{{result.title}}</h2>
-                        </header>
-                        <div class="subprojects-content">
-                            Do-Date: {{result.do_date}}<br/>
-                            Due-Date: {{result.due_date}}<br/>
-                            Progress: {{result.progress}}<br/>
-                            Description: {{result.description}}<br/>
-                            User: {{result.user.username}}<br/>
-                            
-                            Subtasks: 
-                            {% for result2 in tasks %}
-                                {% if result2.is_sub %}
-                                    {% if result2.parent == result.title %}
-                                        {{result2.title}}<br/>
-                                    {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                            <ul id="taskList">
-                        </div>
-              </div>
-             {% endfor %}
-             </div>
-             <div id="sortdue" class = "sortdue">
-             {% for result in tasks|dictsort:"due_date" %}
-             <div class="subprojects">
-                        <header class="subprojects-title">
-                            <!--<span onclick="document.getElementById('id01').style.display='none'"
-                            class="w3-button w3-display-topright">&times;</span>-->
-                        <h2>{{result.title}}</h2>
-                        </header>
-                        <div class="subprojects-content">
-                            Do-Date: {{result.do_date}}<br/>
-                            Due-Date: {{result.due_date}}<br/>
-                            Progress: {{result.progress}}<br/>
-                            Description: {{result.description}}<br/>
-                            User: {{result.user.username}}<br/>
-                            
-                            Subtasks: 
-                            {% for result2 in tasks %}
-                                {% if result2.is_sub %}
-                                    {% if result2.parent == result.title %}
-                                        {{result2.title}}<br/>
-                                    {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                            <ul id="taskList">
-                    </div>
-              </div>
-             {% endfor %}
-             </div>
+                
+                <div id="sorttitle" class="sorttitle">
+                    {% for result in tasks|dictsort:"title" %}
+                        {% if not result.is_sub %}
+                            {% if result.project == currentproject %}
+                                 <div class="subprojects">
+                                    <header class="subprojects-title">
+                                        <!--<span onclick="document.getElementById('id01').style.display='none'"
+                                        class="w3-button w3-display-topright">&times;</span>-->
+                                        <h2>{{result.title}}
+                                    <a href="{% url 'delete' delete=result.title name=result.title %}"><img src="{% static 'task/images/delete.png' %}" height=20px width=20px align="right"></a></h2>
+                                    </header>
+                                    <div class="subprojects-content">
+                                        Do-Date: {{result.do_date}}<br/>
+                                        Due-Date: {{result.due_date}}<br/>
+                                        Progress: {{result.progress}}<br/>
+                                        Description: {{result.description}}<br/>
+                                        
+                                        Subtasks: 
+                                        {% for result2 in tasks %}
+                                            {% if result2.is_sub %}
+                                                {% if result2.parent == result.title %}
+                                                    {{result2.title}}<br/>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        <ul id="taskList">
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                 
+                <div id="sortdo" class = "sortdo">
+                    {% for result in tasks|dictsort:"do_date" %}
+                        {% if not result.is_sub %}
+                            {% if result.project == currentproject %}
+                                <div class="subprojects">
+                                    <header class="subprojects-title">
+                                        <!--<span onclick="document.getElementById('id01').style.display='none'"
+                                        class="w3-button w3-display-topright">&times;</span>-->
+                                        <h2>{{result.title}}
+                                    <a href="{% url 'delete' delete=result.title name=result.title %}"><img src="{% static 'task/images/delete.png' %}" height=20px width=20px align="right"></a></h2>
+                                    </header>
+                                    <div class="subprojects-content">
+                                        Do-Date: {{result.do_date}}<br/>
+                                        Due-Date: {{result.due_date}}<br/>
+                                        Progress: {{result.progress}}<br/>
+                                        Description: {{result.description}}<br/>
+                                        
+                                        Subtasks: 
+                                        {% for result2 in tasks %}
+                                            {% if result2.is_sub %}
+                                                {% if result2.parent == result.title %}
+                                                    {{result2.title}}<br/>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        <ul id="taskList">
+                                    </div>
+                                  </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                
+                <div id="sortdue" class = "sortdue">
+                    {% for result in tasks|dictsort:"due_date" %}
+                        {% if not result.is_sub %}
+                            {% if result.project == currentproject %}
+                                <div class="subprojects">
+                                    <header class="subprojects-title">
+                                        <!--<span onclick="document.getElementById('id01').style.display='none'"
+                                        class="w3-button w3-display-topright">&times;</span>-->
+                                        <h2>{{result.title}}
+                                    <a href="{% url 'delete' delete=result.title name=result.title %}"><img src="{% static 'task/images/delete.png' %}" height=20px width=20px align="right"></a></h2>
+                                    </header>
+                                    <div class="subprojects-content">
+                                        Do-Date: {{result.do_date}}<br/>
+                                        Due-Date: {{result.due_date}}<br/>
+                                        Progress: {{result.progress}}<br/>
+                                        Description: {{result.description}}<br/>
+                                       
+                                        Subtasks: 
+                                        {% for result2 in tasks %}
+                                            {% if result2.is_sub %}
+                                                {% if result2.parent == result.title %}
+                                                    {{result2.title}}<br/>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        <ul id="taskList">
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                
+                <div id="weekly" class = "weekly">
+                    <b>Due This Week</b><br/>
+                    {% for result in weekly|dictsort:"due_date" %}
+                        {% if not result.is_sub %}
+                            {% if result.project == currentproject %}
+                                <div class="subprojects">
+                                    <header class="subprojects-title">
+                                        <!--<span onclick="document.getElementById('id01').style.display='none'"
+                                        class="w3-button w3-display-topright">&times;</span>-->
+                                        <h2>{{result.title}}
+                                    <a href="{% url 'delete' delete=result.title name=result.title %}"><img src="{% static 'task/images/delete.png' %}" height=20px width=20px align="right"></a></h2>
+                                    </header>
+                                    <div class="subprojects-content">
+                                        Do-Date: {{result.do_date}}<br/>
+                                        Due-Date: {{result.due_date}}<br/>
+                                        Progress: {{result.progress}}<br/>
+                                        Description: {{result.description}}<br/>
+                                        
+                                        Subtasks: 
+                                        {% for result2 in tasks %}
+                                            {% if result2.is_sub %}
+                                                {% if result2.parent == result.title %}
+                                                    {{result2.title}}<br/>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        <ul id="taskList">
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div id="daily" class = "daily">
+                    <b>Due Today</b><br/>
+                    {% for result in daily|dictsort:"due_date" %}
+                        {% if not result.is_sub %}
+                            {% if result.project == currentproject %}
+                                <div class="subprojects">
+                                    <header class="subprojects-title">
+                                        <!--<span onclick="document.getElementById('id01').style.display='none'"
+                                        class="w3-button w3-display-topright">&times;</span>-->
+                                        <h2>{{result.title}}
+                                    <a href="{% url 'delete' delete=result.title name=result.title %}"><img src="{% static 'task/images/delete.png' %}" height=20px width=20px align="right"></a></h2>
+                                    </header>
+                                    <div class="subprojects-content">
+                                        Do-Date: {{result.do_date}}<br/>
+                                        Due-Date: {{result.due_date}}<br/>
+                                        Progress: {{result.progress}}<br/>
+                                        Description: {{result.description}}<br/>
+                                        
+                                        Subtasks: 
+                                        {% for result2 in tasks %}
+                                            {% if result2.is_sub %}
+                                                {% if result2.parent == result.title %}
+                                                    {{result2.title}}<br/>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        <ul id="taskList">
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
-
-
-
+        
         <div id="id01" class="modal">
             <div class="container">
-             <form action="home" method="post">
+             <form action="{% url 'home' %}" method="post">
               <h2><span class="h2">
                   New Task
               </span></h2>
@@ -189,7 +660,7 @@
 
         <div id="id02" class="modal">
             <div class="container">
-              <form action="home" method="post">
+              <form action="{% url 'home' %}" method="post">
               <h2><span class="h2">
                   New Project
               </span></h2>
@@ -202,7 +673,7 @@
 
         <div id="id03" class="modal">
             <div class="container">
-              <form action="home" method="post">
+              <form action="{% url 'home' %}" method="post">
               <h2><span class="h2">
                   New Subtask
               </span></h2>
@@ -214,7 +685,38 @@
               </form>
             </div>
         </div>
+        
+        <div id="id04" class="modal">
+            <div class="container">
+             <form action="{% url 'home' %}" method="post">
+              <h2><span class="h2">
+                  Add Collaborator
+              </span></h2>
 
+                {% csrf_token %}
+                {{ form4 }}
+                <input name="collabsubmit" type="submit" value="Submit" />
+              </div>
+             </form>
+            </div>
+        </div>
+        
+        <div id="id05" class="modal">
+            <div class="container">
+             <form action="{% url 'home' %}" method="post">
+              <h2><span class="h2">
+                  Edit Task: Enter Title and New Details
+              </span></h2>
+
+                {% csrf_token %}
+                {{ form }}
+                <input name="taskedit" type="submit" value="Submit" />
+              </div>
+             </form>
+            </div>
+        </div>
+        
+        
         
         <script>
             function myFunction() {
