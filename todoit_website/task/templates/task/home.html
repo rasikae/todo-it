@@ -67,7 +67,8 @@
                 {% csrf_token %}
                 <input type="submit" name="sortadded" value="Date Added">
                 <input type="submit" name="sorttitle" value="Title">
-                <input type="submit" name="sortdo" value="Do-Date"><input type="submit" name="sortdue" value="Due-Date">
+                <input type="submit" name="sortdo" value="Do-Date">
+                <input type="submit" name="sortdue" value="Due-Date">
             </form>
             <!--Displays all tasks if there is not a selected project-->
             {% if currentproject == "" %}
