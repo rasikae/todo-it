@@ -120,6 +120,8 @@ def home(request, delete=''):
 	  collabs = request.user.collab.replace(' ', '').split(',')
 	  users1 = User.objects.filter(username__in=collabs)
 	  users = Task.objects.filter(user__in=users1)
+	  weekly=""
+	  daily=""
 	  if request.method == 'GET':
 	      Task.objects.filter(title=request.GET.get('delete', False))
 	      weekly = Task.objects.filter(due_date__range=[start_week, end_week])
@@ -142,6 +144,16 @@ def home(request, delete=''):
 	          return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})                
 	      if "sortdue" in request.POST:
 	          tasks = Task.objects.all().filter(user=request.user).order_by('due_date')
+	          users = Task.objects.filter(user__in=users1).order_by('due_date')
+	          return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})                
+	      if "sortweek" in request.POST:
+	          weekly="Yes"
+	          tasks = Task.objects.filter(user=request.user, due_date__range=[start_week, end_week])
+	          users = Task.objects.filter(user__in=users1).order_by('due_date')
+	          return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})                
+	      if "sortday" in request.POST:
+	          daily="Yes"
+	          tasks = Task.objects.filter(user=request.user, due_date__date=datetime.date.today())
 	          users = Task.objects.filter(user__in=users1).order_by('due_date')
 	          return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})                
 	         
@@ -280,6 +292,8 @@ def home2(request, project):
     collabs = request.user.collab.replace(' ', '').split(',')
     users1 = User.objects.filter(username__in=collabs)
     users = Task.objects.filter(user__in=users1)
+    weekly=""
+    daily=""
     if request.method == 'GET':
         if '/' in project:
             task = os.path.basename(project)
@@ -300,19 +314,29 @@ def home2(request, project):
         if "sortadded" in request.POST:
             tasks = Task.objects.all().filter(user=request.user)
             users = Task.objects.filter(user__in=users1)
-            return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})                
+            return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": project, "weekly": weekly, "daily": daily})                
         if "sorttitle" in request.POST:
             tasks = Task.objects.all().filter(user=request.user).order_by('title')
             users = Task.objects.filter(user__in=users1).order_by('title')
-            return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})                
+            return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": project, "weekly": weekly, "daily": daily})                
         if "sortdo" in request.POST:
             tasks = Task.objects.all().filter(user=request.user).order_by('do_date')
             users = Task.objects.filter(user__in=users1).order_by('do_date')
-            return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})                
+            return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": project, "weekly": weekly, "daily": daily})                
         if "sortdue" in request.POST:
             tasks = Task.objects.all().filter(user=request.user).order_by('due_date')
             users = Task.objects.filter(user__in=users1).order_by('due_date')
-            return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})                
+            return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": project, "weekly": weekly, "daily": daily})                
+        if "sortweek" in request.POST:
+            weekly="Yes"
+            tasks = Task.objects.filter(user=request.user, due_date__range=[start_week, end_week])
+            users = Task.objects.filter(user__in=users1).order_by('due_date')
+            return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": project, "weekly": weekly, "daily": daily})                
+        if "sortday" in request.POST:
+            daily="Yes"
+            tasks = Task.objects.filter(user=request.user, due_date__date=datetime.date.today())
+            users = Task.objects.filter(user__in=users1).order_by('due_date')
+            return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": project, "weekly": weekly, "daily": daily})                
 
         # create a form instance and populate it with data from the request:
         if 'tasksubmit' in request.POST:
@@ -337,7 +361,7 @@ def home2(request, project):
                     due_date__date=datetime.date.today())
                 tasks = Task.objects.all().filter(user=request.user)
                 form = taskform()
-                return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})
+                return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": project, "weekly": weekly, "daily": daily})
         if 'taskedit' in request.POST:
             form = taskform(request.POST)
             # check whether it's valid:
@@ -364,7 +388,7 @@ def home2(request, project):
                         due_date__date=datetime.date.today())
                     tasks = Task.objects.all().filter(user=request.user)
                     form = taskform()
-                    return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})
+                    return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": project, "weekly": weekly, "daily": daily})
 
         if 'collabsubmit' in request.POST:
             form4 = collabform(request.POST)
@@ -385,7 +409,7 @@ def home2(request, project):
                     users1 = User.objects.filter(username__in=collabs)
                     users = Task.objects.filter(user__in=users1)
                     form4 = collabform()
-                    return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})
+                    return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": project, "weekly": weekly, "daily": daily})
 
         elif 'projectsubmit' in request.POST:
             form2 = projectform(request.POST)
@@ -401,7 +425,7 @@ def home2(request, project):
                 newpro.save()
                 projects = Project.objects.all().filter(user=request.user)
                 form2 = projectform()
-                return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})
+                return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": project, "weekly": weekly, "daily": daily})
         elif 'subtasksubmit' in request.POST:
             form3 = subtaskform(request.POST)
             if form3.is_valid():
@@ -421,5 +445,5 @@ def home2(request, project):
                     due_date__date=datetime.date.today())
                 tasks = Task.objects.all().filter(user=request.user)
                 form3 = subtaskform()
-                return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})
-    return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})
+                return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": project, "weekly": weekly, "daily": daily})
+    return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": project, "weekly": weekly, "daily": daily})

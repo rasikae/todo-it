@@ -55,24 +55,32 @@
             <!--Opens new task window-->
             <button onclick="document.getElementById('id01').style.display='block'"><img src="{% static 'task/images/plus.png' %}" width=25% height=25% align="right"></button>
             
-            <!--Following buttons change to day or week view-->
-            <button onclick="document.getElementById('daily').style.display='block';document.getElementById('weekly').style.display='none';document.getElementById('sortadded').style.display='none'">Day View</button> 
-            <button onclick="document.getElementById('daily').style.display='none';document.getElementById('weekly').style.display='block';document.getElementById('sortadded').style.display='none'">Week View</button> 
-            <button onclick="document.getElementById('id04').style.display='block'">Add Collaborator</button>
+            <!--Following buttons open collaborator/edit task windows-->
             <button onclick="document.getElementById('id05').style.display='block'">Edit Task</button>
+            <button onclick="document.getElementById('id04').style.display='block'">Add Collaborator</button>
            
             <!--Form for various sort methods-->
-            <form action="{% url 'home' %}" method="post">
-                Sort By: 
-                {% csrf_token %}
-                <input type="submit" name="sortadded" value="Date Added">
-                <input type="submit" name="sorttitle" value="Title">
-                <input type="submit" name="sortdo" value="Do-Date">
-                <input type="submit" name="sortdue" value="Due-Date">
-            </form>
+            <div class="sorts">
+                <form action= "{% url 'projecthome' project=currentproject %}" method="post">
+                    Sort By: 
+                    {% csrf_token %}
+                    <input type="submit" name="sortadded" value="Date Added">
+                    <input type="submit" name="sorttitle" value="Title">
+                    <input type="submit" name="sortdo" value="Do-Date">
+                    <input type="submit" name="sortdue" value="Due-Date">
+                    <input type="submit" name="sortweek" value="Week View">
+                    <input type="submit" name="sortday" value="Day View">
+                </form>
+            </div>
             <!--Displays all tasks if there is not a selected project-->
             {% if currentproject == "" %}
                 <b>Home</b><br/><br/>
+                {% if weekly == "Yes" %}
+                    <b>Week View</b><br/><br/>
+                {% endif %}
+                {% if daily == "Yes" %}
+                    <b>Day View</b><br/><br/>
+                {% endif %}
                 <div id="sortadded" class="sortadded">
                     <!--Displays user's own tasks-->
                     {% for result in tasks %}
@@ -132,121 +140,6 @@
                         {% endif %}
                     {% endfor %}
                 </div>
-                <!--Same as above, different sort method-->
-                <div id="weekly" class = "weekly">
-                    <b>Due This Week</b><br/>
-                    {% for result in weekly|dictsort:"due_date" %}
-                        {% if not result.is_sub %}
-                            <div class="subprojects">
-                                <header class="subprojects-title">
-                                    <h2>{{result.title}}
-                                    <a href="{% url 'delete' delete=result.title name=result.title %}"><img src="{% static 'task/images/delete.png' %}" height=20px width=20px align="right"></a></h2>
-                                </header>
-                                <div class="subprojects-content">
-                                    Do-Date: {{result.do_date}}<br/>
-                                    Due-Date: {{result.due_date}}<br/>
-                                    Progress: {{result.progress}}<br/>
-                                    Description: {{result.description}}<br/>
-                                    Project: {{result.project}}<br/>
-                                    
-                                    Subtasks: 
-                                    {% for result2 in tasks %}
-                                        {% if result2.is_sub %}
-                                            {% if result2.parent == result.title %}
-                                                {{result2.title}}<br/>
-                                            {% endif %}
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-
-                    <br/><br/><b>Shared with You</b><br/><br/>
-                    {% for result in users|dictsort:"due_date" %}
-                        {% if not result.is_sub %}
-                            <div class="subprojects">
-                                <header class="subprojects-title">
-                                    <h2>{{result.title}}
-                                </header>
-                                <div class="subprojects-content">
-                                    Do-Date: {{result.do_date}}<br/>
-                                    Due-Date: {{result.due_date}}<br/>
-                                    Progress: {{result.progress}}<br/>
-                                    Description: {{result.description}}<br/>
-                                    Project: {{result.project}}<br/>
-                                            
-                                    Subtasks: 
-                                    {% for result2 in tasks %}
-                                        {% if result2.is_sub %}
-                                            {% if result2.parent == result.title %}
-                                                {{result2.title}}<br/>
-                                            {% endif %}
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-                
-                <!--Same as above, different sort method-->
-                <div id="daily" class = "daily">
-                    <b>Due Today</b><br/>
-                    {% for result in daily|dictsort:"due_date" %}
-                        {% if not result.is_sub %}
-                            <div class="subprojects">
-                                <header class="subprojects-title">
-                                    <h2>{{result.title}}
-                                    <a href="{% url 'delete' delete=result.title name=result.title %}"><img src="{% static 'task/images/delete.png' %}" height=20px width=20px align="right"></a></h2>
-                                </header>
-                                <div class="subprojects-content">
-                                    Do-Date: {{result.do_date}}<br/>
-                                    Due-Date: {{result.due_date}}<br/>
-                                    Progress: {{result.progress}}<br/>
-                                    Description: {{result.description}}<br/>
-                                    Project: {{result.project}}<br/>
-                                    
-                                    Subtasks: 
-                                    {% for result2 in tasks %}
-                                        {% if result2.is_sub %}
-                                            {% if result2.parent == result.title %}
-                                                {{result2.title}}<br/>
-                                            {% endif %}
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                    
-                    <br/><br/><b>Shared with You</b><br/><br/>
-                    {% for result in users|dictsort:"due_date" %}
-                        {% if not result.is_sub %}
-                            <div class="subprojects">
-                                <header class="subprojects-title">
-                                    <h2>{{result.title}}
-                                </header>
-                                <div class="subprojects-content">
-                                    Do-Date: {{result.do_date}}<br/>
-                                    Due-Date: {{result.due_date}}<br/>
-                                    Progress: {{result.progress}}<br/>
-                                    Description: {{result.description}}<br/>
-                                    Project: {{result.project}}<br/>
-                                            
-                                    Subtasks: 
-                                    {% for result2 in tasks %}
-                                        {% if result2.is_sub %}
-                                            {% if result2.parent == result.title %}
-                                                {{result2.title}}<br/>
-                                            {% endif %}
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
             {% endif %}
                 
             <!--Displays as above but only for current project-->
@@ -281,70 +174,6 @@
                         {% endif %}
                     {% endfor %}
                 </div>
-                
-                <!--Same as above, different sort method-->
-                <div id="weekly" class = "weekly">
-                    <b>Due This Week</b><br/>
-                    {% for result in weekly|dictsort:"due_date" %}
-                        {% if not result.is_sub %}
-                            {% if result.project == currentproject %}
-                                <div class="subprojects">
-                                    <header class="subprojects-title">
-                                        <h2>{{result.title}}
-                                    <a href="{% url 'delete' delete=result.title name=result.title %}"><img src="{% static 'task/images/delete.png' %}" height=20px width=20px align="right"></a></h2>
-                                    </header>
-                                    <div class="subprojects-content">
-                                        Do-Date: {{result.do_date}}<br/>
-                                        Due-Date: {{result.due_date}}<br/>
-                                        Progress: {{result.progress}}<br/>
-                                        Description: {{result.description}}<br/>
-                                        
-                                        Subtasks: 
-                                        {% for result2 in tasks %}
-                                            {% if result2.is_sub %}
-                                                {% if result2.parent == result.title %}
-                                                    {{result2.title}}<br/>
-                                                {% endif %}
-                                            {% endif %}
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                </div>
-                
-                <!--Same as above, different sort method-->
-                <div id="daily" class = "daily">
-                    <b>Due Today</b><br/>
-                    {% for result in daily|dictsort:"due_date" %}
-                        {% if not result.is_sub %}
-                            {% if result.project == currentproject %}
-                                <div class="subprojects">
-                                    <header class="subprojects-title">
-                                        <h2>{{result.title}}
-                                    <a href="{% url 'delete' delete=result.title name=result.title %}"><img src="{% static 'task/images/delete.png' %}" height=20px width=20px align="right"></a></h2>
-                                    </header>
-                                    <div class="subprojects-content">
-                                        Do-Date: {{result.do_date}}<br/>
-                                        Due-Date: {{result.due_date}}<br/>
-                                        Progress: {{result.progress}}<br/>
-                                        Description: {{result.description}}<br/>
-                                        
-                                        Subtasks: 
-                                        {% for result2 in tasks %}
-                                            {% if result2.is_sub %}
-                                                {% if result2.parent == result.title %}
-                                                    {{result2.title}}<br/>
-                                                {% endif %}
-                                            {% endif %}
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                </div>
             {% endif %}
         </div>
         
@@ -355,7 +184,7 @@
                   New Task
               </span></h2>
                 {% csrf_token %}
-                {{ form }}
+                {{ form|linebreaks }}
                 <input name="tasksubmit" type="submit" value="Submit" />
                 <button onclick="document.getElementById('id03').style.display = 'block'" type="button">></button>
               </div>
@@ -384,7 +213,7 @@
                   New Subtask
               </span></h2>
                 {% csrf_token %}
-                {{ form3 }}
+                {{ form3|linebreaks }}
               <div align="right">
                 <input name="subtasksubmit" type="submit" value="Submit">
               </div>
@@ -413,7 +242,7 @@
                   Edit Task: Enter Title and New Details
               </span></h2>
                 {% csrf_token %}
-                {{ form }}
+                {{ form|linebreaks }}
                 <input name="taskedit" type="submit" value="Submit" />
               </div>
              </form>
