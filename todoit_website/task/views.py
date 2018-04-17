@@ -25,7 +25,10 @@ import os
 def login(request):
     print("login function")
     # User.objects.all().delete() # deletes all users in database
+
     if request.method == 'POST':
+
+    		# If user is trying to login, check and authenticate user
         if 'loginbutton' in request.POST:
             print("'loginbutton' found")
             loginform_req = loginform(request.POST)
@@ -40,6 +43,7 @@ def login(request):
 
                 print(user)
 
+                # if valid user, then login user and redirect to homepage
                 if user is not None:
                     print("user is not none")
                     if user.is_active:
@@ -47,9 +51,11 @@ def login(request):
                         messages.success(request, username)
                         return HttpResponseRedirect('home')
 
+        # if user is trying to register an account, 
         elif 'registerbutton' in request.POST:
             print("'registerbutton' found")
             registerform_req = registerform(request.POST)
+
             if registerform_req.is_valid():
                 newuser = User(email=registerform_req.cleaned_data['email'])
                 newuser.first_name = registerform_req.cleaned_data['firstname']
@@ -68,6 +74,7 @@ def login(request):
 
                 # simpling doing this does the same as below..?
                 # return HttpResponseRedirect('home')
+
                 date = datetime.date.today()
                 start_week = date - datetime.timedelta(date.weekday())
                 end_week = start_week + datetime.timedelta(7)
@@ -79,6 +86,7 @@ def login(request):
                 username = registerform_req.cleaned_data['username']
                 password = registerform_req.cleaned_data['password']
                 user = authenticate(username=username, password=password)
+                
                 if user is not None:
                     if user.is_active:
                         auth_login(request, user)
