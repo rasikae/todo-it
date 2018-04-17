@@ -1,11 +1,13 @@
 from django import forms
+
+# Different choices for progress drop-down
 PROGRESS_CHOICES = (
     ('IN PROGRESS', 'In Progress'),
     ('DONE', 'Done'),
     ('NOT STARTED', 'Not Started'),
 )
 
-
+# Forms used in home and login html files
 class taskform(forms.Form):
     title = forms.CharField(label='Title', max_length=128)
     dodate = forms.DateTimeField(label='Do-Date')
@@ -45,7 +47,6 @@ class registerform(forms.Form):
 
 
 class loginform(forms.Form):
-    # email = forms.EmailField(max_length=128,widget=forms.TextInput(attrs={'placeholder':'First Name'}))
     username = forms.CharField(label='', max_length=128, widget=forms.TextInput(
         attrs={'placeholder': 'Username'}))
     password = forms.CharField(label='', max_length=128, widget=forms.TextInput(

@@ -9,12 +9,14 @@
   <body>
     <div class="login-page">
       <div id="form" class="form">
+        <!--Form for user registration-->
         <form id="register" action="" class="register" method=post>
           {% csrf_token %}
           {{registerform}}
           <button id="registerid" name="registerbutton" type="submit">register</button>
           <p class="message">Already registered? <a id="signinID" href="#">Sign In</a></p>
         </form>
+        <!--Form for user login-->
         <form id="loginfid" action="" class="loginfid" method=post>
           {% csrf_token %}
           {{loginform}}

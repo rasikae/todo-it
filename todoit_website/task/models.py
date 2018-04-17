@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 import uuid
 
-# Create your models here.
+# Models for User, Tasks, Project
 
 
 class User(AbstractUser):
@@ -27,7 +27,6 @@ class Task(models.Model):
     title = models.CharField(max_length=128)  # temp max length
     description = models.CharField(max_length=300, default='Add a description')
     progress = models.CharField(max_length=20, default='Set progress')
-    # can also be just DateField
     do_date = models.DateTimeField(auto_now=False, auto_now_add=False)
     due_date = models.DateTimeField(
         auto_now=False, auto_now_add=False)  # can also be just DateField

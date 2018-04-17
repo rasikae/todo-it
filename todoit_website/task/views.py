@@ -22,32 +22,33 @@ import datetime
 import os
 import operator
 
-# Create your views here.
+# Login View manages login and registration
 def login(request):
     print("login function")
+    
     # User.objects.all().delete() # deletes all users in database
+    
     if request.method == 'POST':
+        # If login form is submitted
         if 'loginbutton' in request.POST:
             print("'loginbutton' found")
             loginform_req = loginform(request.POST)
-
+            
             if loginform_req.is_valid():
                 username = loginform_req.cleaned_data['username']
                 password = loginform_req.cleaned_data['password']
 
-                print(password)
-
                 user = authenticate(username=username, password=password)
 
                 print(user)
-
+                #If login form contained correct user info then sign in and redirect to home
                 if user is not None:
                     print("user is not none")
                     if user.is_active:
                         auth_login(request, user)
                         messages.success(request, username)
                         return HttpResponseRedirect('home')
-
+        # If register form is submitted
         elif 'registerbutton' in request.POST:
             print("'registerbutton' found")
             registerform_req = registerform(request.POST)
@@ -61,14 +62,15 @@ def login(request):
                 newuser.set_password(registerform_req.cleaned_data['password'])
 
                 print("User created but not saved")
-
+                
+                # Create new user with form info
+                
                 newuser.last_login = timezone.now()
                 newuser.save()
 
                 print("User saved")
 
-                # simpling doing this does the same as below..?
-                # return HttpResponseRedirect('home')
+                # Sets context to send in render
                 date = datetime.date.today()
                 start_week = date - datetime.timedelta(date.weekday())
                 end_week = start_week + datetime.timedelta(7)
@@ -80,6 +82,7 @@ def login(request):
                 username = registerform_req.cleaned_data['username']
                 password = registerform_req.cleaned_data['password']
                 user = authenticate(username=username, password=password)
+                #Authenticate suser and redirects to home page
                 if user is not None:
                     if user.is_active:
                         auth_login(request, user)
@@ -98,14 +101,15 @@ def login(request):
 
     cform = registerform()
     lform = loginform()
-
+    #If failed to log in then reload login page
     return render(request, 'task/login.html', {"registerform": cform, "loginform": lform})
 
 
 @login_required
 def home(request, delete=''):
 	  # Task.objects.all().delete() # deletes all task objects
-	  # if this is a POST request we need to process the form data
+	  
+	  # Sets context to send in render
 	  date = datetime.date.today()
 	  start_week = date - datetime.timedelta(date.weekday())
 	  end_week = start_week + datetime.timedelta(7)
@@ -122,6 +126,8 @@ def home(request, delete=''):
 	  users = Task.objects.filter(user__in=users1)
 	  weekly=""
 	  daily=""
+	  
+	  # if this is a GET request then it is a delete task request
 	  if request.method == 'GET':
 	      Task.objects.filter(title=request.GET.get('delete', False))
 	      weekly = Task.objects.filter(due_date__range=[start_week, end_week])
@@ -129,7 +135,10 @@ def home(request, delete=''):
 	      tasks = Task.objects.all().filter(user=request.user)
 	      form = taskform()
 	      return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})
+	  
+	   # if this is a POST request we need to figure out which one
 	  if request.method == 'POST':
+	      # The following are different sort requests, sorting is done, then the page is refreshed
 	      if "sortadded" in request.POST:
 	          tasks = Task.objects.all().filter(user=request.user)
 	          users = Task.objects.filter(user__in=users1)
@@ -157,7 +166,9 @@ def home(request, delete=''):
 	          users = Task.objects.filter(user__in=users1).order_by('due_date')
 	          return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})                
 	         
-	      # create a form instance and populate it with data from the request:
+	      # the following are various submit forms
+	      
+	      # takes new task form data and creates a new task
 	      if 'tasksubmit' in request.POST:
 	          form = taskform(request.POST)
 	          # check whether it's valid:
@@ -184,6 +195,8 @@ def home(request, delete=''):
 	                print(x)
 	              print("Hello")
 	              return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})
+	      
+	      # reads same type of form as above, modifies fields for given title
 	      if 'taskedit' in request.POST:
 	          form = taskform(request.POST)
 	          # check whether it's valid:
@@ -211,7 +224,8 @@ def home(request, delete=''):
 	                  tasks = Task.objects.all().filter(user=request.user)
 	                  form = taskform()
 	                  return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})
-
+          
+          # Adds current user to given user's collaborators
 	      if 'collabsubmit' in request.POST:
 	          form4 = collabform(request.POST)
 	          print("GOOD")
@@ -233,7 +247,8 @@ def home(request, delete=''):
 	                  users = Task.objects.filter(user__in=users1)
 	                  form4 = collabform()
 	                  return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})
-
+          
+          # Creates new project from form data
 	      elif 'projectsubmit' in request.POST:
 	          form2 = projectform(request.POST)
 	          # check whether it's valid:
@@ -249,6 +264,8 @@ def home(request, delete=''):
 	              projects = Project.objects.all().filter(user=request.user)
 	              form2 = projectform()
 	              return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})
+	      
+	      # Creates subtask for given task with form info
 	      elif 'subtasksubmit' in request.POST:
 	          form3 = subtaskform(request.POST)
 	          if form3.is_valid():
@@ -276,8 +293,9 @@ def home(request, delete=''):
 	  return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})                
 
 def home2(request, project):
+    # This view is for projects, is largely the same as the home view
+    
     # Task.objects.all().delete() # deletes all task objects
-    # if this is a POST request we need to process the form data
     date = datetime.date.today()
     start_week = date - datetime.timedelta(date.weekday())
     end_week = start_week + datetime.timedelta(7)
@@ -294,7 +312,9 @@ def home2(request, project):
     users = Task.objects.filter(user__in=users1)
     weekly=""
     daily=""
+    
     if request.method == 'GET':
+        # Decides if the get request is for a task delete, or to view a project
         if '/' in project:
             task = os.path.basename(project)
             Task.objects.filter(title=task).delete()
@@ -308,8 +328,6 @@ def home2(request, project):
         else:
             return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": project, "weekly": weekly, "daily": daily})
 
-    # Task.objects.all().delete() # deletes all task objects
-    # if this is a POST request we need to process the form data
     if request.method == 'POST':
         if "sortadded" in request.POST:
             tasks = Task.objects.all().filter(user=request.user)
