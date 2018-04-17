@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 import uuid
 
-# Create your models here.
+# Models for User, Tasks, Project
 
 # model used to represent a User class object
 class User(AbstractUser):

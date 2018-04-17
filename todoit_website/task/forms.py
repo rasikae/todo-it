@@ -1,12 +1,13 @@
 from django import forms
 
+# Different choices for progress drop-down
 PROGRESS_CHOICES = (
     ('Not Started', 'Not Started'),
     ('In Progress', 'In Progress'),
     ('Done', 'Done'),
 )
 
-# The form used to take input for tasks
+# Forms used in home and login html files
 class taskform(forms.Form):
     title = forms.CharField(label='', max_length=128, widget=forms.TextInput(
         attrs={'placeholder': 'Task Title'}))
