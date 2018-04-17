@@ -28,7 +28,8 @@ def login(request):
     print("login function")
     
     # User.objects.all().delete() # deletes all users in database
-    
+
+ 		# If user is trying to login, check and authenticate user
     if request.method == 'POST':
         # If login form is submitted
         if 'loginbutton' in request.POST:
@@ -42,6 +43,7 @@ def login(request):
                 user = authenticate(username=username, password=password)
 
                 print(user)
+
                 #If login form contained correct user info then sign in and redirect to home
                 if user is not None:
                     print("user is not none")
@@ -53,6 +55,7 @@ def login(request):
         elif 'registerbutton' in request.POST:
             print("'registerbutton' found")
             registerform_req = registerform(request.POST)
+
             if registerform_req.is_valid():
                 newuser = User(email=registerform_req.cleaned_data['email'])
                 newuser.first_name = registerform_req.cleaned_data['firstname']
@@ -71,6 +74,9 @@ def login(request):
 
                 print("User saved")
 
+                # simpling doing this does the same as below..?
+                # return HttpResponseRedirect('home')
+
                 # Sets context to send in render
                 date = datetime.date.today()
                 start_week = date - datetime.timedelta(date.weekday())
@@ -83,6 +89,7 @@ def login(request):
                 username = registerform_req.cleaned_data['username']
                 password = registerform_req.cleaned_data['password']
                 user = authenticate(username=username, password=password)
+
                 #Authenticate suser and redirects to home page
                 if user is not None:
                     if user.is_active:
