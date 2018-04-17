@@ -55,3 +55,7 @@ class loginform(forms.Form):
 
 class collabform(forms.Form):
     name = forms.CharField(label='Username', max_length=128)
+    
+class deleteprojectform(forms.Form):
+    name = forms.CharField(label='Project Name', max_length=128)
+

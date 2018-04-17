@@ -56,6 +56,7 @@
             <button onclick="document.getElementById('id01').style.display='block'"><img src="{% static 'task/images/plus.png' %}" width=25% height=25% align="right"></button>
             
             <!--Following buttons open collaborator/edit task windows-->
+            <button onclick="document.getElementById('id06').style.display='block'">Delete Project</button>
             <button onclick="document.getElementById('id05').style.display='block'">Edit Task</button>
             <button onclick="document.getElementById('id04').style.display='block'">Add Collaborator</button>
            
@@ -199,7 +200,7 @@
                   New Project
               </span></h2>
                 {% csrf_token %}
-                {{ form2 }}
+                {{ form2|linebreaks }}
                 <input name='projectsubmit' type="submit" value="Submit" />
                 </form>
             </div>
@@ -227,7 +228,7 @@
                   Add Collaborator
               </span></h2>
                 {% csrf_token %}
-                {{ form4 }}
+                {{ form4|linebreaks }}
                 <input name="collabsubmit" type="submit" value="Submit" />
               </div>
              </form>
@@ -243,6 +244,20 @@
                 {% csrf_token %}
                 {{ form|linebreaks }}
                 <input name="taskedit" type="submit" value="Submit" />
+              </div>
+             </form>
+            </div>
+        </div>
+        
+        <div id="id06" class="modal">
+            <div class="container">
+             <form action="{% url 'home' %}" method="post">
+              <h2><span class="h2">
+                  Delete Project: Enter Title
+              </span></h2>
+                {% csrf_token %}
+                {{ form5|linebreaks }}
+                <input name="deleteproject" type="submit" value="Submit" />
               </div>
              </form>
             </div>
