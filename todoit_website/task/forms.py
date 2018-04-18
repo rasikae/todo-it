@@ -70,3 +70,6 @@ class loginform(forms.Form):
 class collabform(forms.Form):
     name = forms.CharField(label='', max_length=128, widget=forms.TextInput(
         attrs={'placeholder': 'Collaborator Username'}))
+    
+class deleteprojectform(forms.Form):
+    name = forms.CharField(label='Title', max_length=128)
