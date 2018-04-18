@@ -26,10 +26,13 @@
                     <b> Hello {{ user.username }}! </b>       
                 {% endif %}
                 <div class="dropdown">
-                  <a id="user_pic"> <img src="{% static 'task/images/user.png' %}" height=40px width=40px align="right"></a>
-                  <div id="thedropdown" class="dropdown-content">
-                    <a id="thelogout" name="logoutbutton" type="submit" href="#" method=post>Logout</a>
-                  </div>
+                        <a id="user_pic"> <img src="{% static 'task/images/user.png' %}" height=40px width=40px align="right"></a>
+                        <div id="thedropdown" class="dropdown-content">
+                            <form action="{% url 'home' %}" method="post">
+                                {% csrf_token %}
+                                <input id="thelogout" name="logoutbutton" type="submit" value="Logout">
+                            </form>
+                        </div>
                 </div>
 
                 <!--Redirects to login page-->

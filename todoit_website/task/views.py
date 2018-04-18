@@ -7,15 +7,13 @@ from .forms import registerform
 from .forms import loginform
 from .forms import collabform
 from .forms import subtaskform
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import authenticate
-from django.contrib.auth import login as auth_login
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponseRedirect
 from django.utils import timezone
 from datetime import timedelta
 import datetime
@@ -47,9 +45,9 @@ def login(request):
                 if user is not None:
                     print("user is not none")
                     if user.is_active:
-                        auth_login(request, user)
-                        messages.success(request, username)
-                        return HttpResponseRedirect('home')
+                    		auth_login(request,user)
+                    		messages.success(request, username)
+                    		return redirect('home')
         # If register form is submitted
         elif 'registerbutton' in request.POST:
             print("'registerbutton' found")
@@ -74,7 +72,7 @@ def login(request):
                 print("User saved")
 
                 # simpling doing this does the same as below..?
-                # return HttpResponseRedirect('home')
+                # return redirect('home')
 
                 # Sets context to send in render
                 date = datetime.date.today()
@@ -92,7 +90,7 @@ def login(request):
                 #Authenticate suser and redirects to home page
                 if user is not None:
                     if user.is_active:
-                        auth_login(request, user)
+                        auth_login(request,user)
                         messages.success(request, username)
                         weekly = Task.objects.filter(
                             due_date__range=[start_week, end_week])
@@ -232,10 +230,10 @@ def home(request, delete=''):
 	                  form = taskform()
 	                  return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})
           
-          # Adds current user to given user's collaborators
+         # Adds current user to given user's collaborators
 	      if 'collabsubmit' in request.POST:
 	          form4 = collabform(request.POST)
-	          print("GOOD")
+	          print("adding collaborator")
 	          # check whether it's valid:
 	          if form4.is_valid():
 	              # process the data in form.cleaned_data as required
@@ -294,9 +292,9 @@ def home(request, delete=''):
 	              form3 = subtaskform()
 	              return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})
 	      elif 'logoutbutton' in request.POST:
-	      	print("_logout_")
-	      	logout(request)
-	      	return HttpResponseRedirect('login')
+	      	print("logging out")
+	      	auth_logout(request)
+	      	return redirect('login')
 	  return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "currentproject": "", "weekly": weekly, "daily": daily})                
 
 def home2(request, project):

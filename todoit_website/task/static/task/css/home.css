@@ -192,7 +192,7 @@ body {
 .daily {
     display: none;
 }
-.sorts input[type="submit"]{
+input[type="submit"]{
     background-color: Transparent;
     border: none;
     cursor:pointer;
