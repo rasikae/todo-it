@@ -56,6 +56,7 @@
             <button onclick="document.getElementById('id01').style.display='block'"><img src="{% static 'task/images/plus.png' %}" width=25% height=25% align="right"></button>
             
             <!--Following buttons open collaborator/edit task windows-->
+            <button onclick="document.getElementById('id07').style.display='block'">Export to Google Calendar</button>
             <button onclick="document.getElementById('id06').style.display='block'">Delete Project</button>
             <button onclick="document.getElementById('id05').style.display='block'">Edit Task</button>
             <button onclick="document.getElementById('id04').style.display='block'">Add Collaborator</button>
@@ -258,6 +259,19 @@
                 {% csrf_token %}
                 {{ form5|linebreaks }}
                 <input name="deleteproject" type="submit" value="Submit" />
+              </div>
+             </form>
+            </div>
+        </div>
+        <div id="id07" class="modal">
+            <div class="container">
+             <form action="{% url 'home' %}" method="post">
+              <h2><span class="h2">
+                  Export Task: Enter Title
+              </span></h2>
+                {% csrf_token %}
+                {{ form5|linebreaks }}
+                <input name="export" type="submit" value="Submit" />
               </div>
              </form>
             </div>

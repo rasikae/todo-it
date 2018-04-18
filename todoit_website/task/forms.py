@@ -68,9 +68,8 @@ class loginform(forms.Form):
 
 # The form used to take input for collaborating
 class collabform(forms.Form):
-    name = forms.CharField(label='Username', max_length=128)
-    
-class deleteprojectform(forms.Form):
-    name = forms.CharField(label='Project Name', max_length=128)
     name = forms.CharField(label='', max_length=128, widget=forms.TextInput(
         attrs={'placeholder': 'Collaborator Username'}))
+    
+class deleteprojectform(forms.Form):
+    name = forms.CharField(label='Title', max_length=128)

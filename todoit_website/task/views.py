@@ -167,11 +167,26 @@ def home(request, delete=''):
 	          return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4,"form5": form5, "currentproject": "", "weekly": weekly, "daily": daily})                
 	         
 	      # the following are various submit forms
+	      if "export" in request.POST:
+	          form5 = deleteprojectform(request.POST)
+	          if form5.is_valid():
+	              try:
+	                  task = Task.objects.get(title=form5.cleaned_data['name'], user=request.user)
+	              except ObjectDoesNotExist:
+	                  task = None
+	              if task:
+                        title = task.title
+                        date = task.due_date
+                        desc = task.description
+                        #DO JSON, CALENDAR LOGIN, EXPORT STUFF
+                        form5 = deleteprojectform()
+                        return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4,"form5": form5, "currentproject": "", "weekly": weekly, "daily": daily})
+	      
 	      if "deleteproject" in request.POST:
 	          form5 = deleteprojectform(request.POST)
 	          # check whether it's valid:
 	          if form5.is_valid():
-	              Project.objects.filter(title=form5.cleaned_data['name']).delete()
+	              Project.objects.filter(title=form5.cleaned_data['name'], user=request.user).delete()
 	              projects = Project.objects.all().filter(user=request.user)
 	              form5 = deleteprojectform()
 	              return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4,"form5": form5, "currentproject": "", "weekly": weekly, "daily": daily})
@@ -367,6 +382,22 @@ def home2(request, project):
             return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4,"form5": form5, "currentproject": project, "weekly": weekly, "daily": daily})                
 
         # create a form instance and populate it with data from the request:
+        
+        if "export" in request.POST:
+	          form5 = deleteprojectform(request.POST)
+	          if form5.is_valid():
+	              try:
+	                  task = Task.objects.get(title=form5.cleaned_data['name'], user=request.user)
+	              except ObjectDoesNotExist:
+	                  task = None
+	              if task:
+                        title = task.title
+                        date = task.due_date
+                        desc = task.description
+                        #DO JSON, CALENDAR LOGIN, EXPORT STUFF
+                        form5 = deleteprojectform()
+                        return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4,"form5": form5, "currentproject": "", "weekly": weekly, "daily": daily})
+	      
         if "deleteproject" in request.POST:
 	          form5 = deleteprojectform(request.POST)
 	          # check whether it's valid:
@@ -374,7 +405,7 @@ def home2(request, project):
 	              Project.objects.filter(title=form5.cleaned_data['name'])
 	              projects = Project.objects.all().filter(user=request.user)
 	              form5 = deleteprojectform()
-	              return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4,"form5": form5, "currentproject": "", "weekly": weekly, "daily": daily})
+	              return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4,"form5": form5, "currentproject": project, "weekly": weekly, "daily": daily})
 	      
         if 'tasksubmit' in request.POST:
             form = taskform(request.POST)
