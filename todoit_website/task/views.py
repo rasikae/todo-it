@@ -177,7 +177,7 @@ def home(request, delete=''):
                         enddate = date + datetime.timedelta(1)
                         enddate = enddate.date()
 
-                        addEvent2Calendar(title,startdate,enddate,desc)
+                        addEvent2Calendar(request.user,title,startdate,enddate,desc)
 
                         form5 = deleteprojectform()
                         return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4,"form5": form5, "currentproject": "", "weekly": weekly, "daily": daily})
@@ -401,7 +401,8 @@ def home2(request, project):
                         enddate = date + datetime.timedelta(1)
                         enddate = enddate.date()
 
-                        addEvent2Calendar(title,startdate,enddate,desc)
+                        addEvent2Calendar(request.user,title,startdate,enddate,desc)
+                        
                         form5 = deleteprojectform()
                         return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4,"form5": form5, "currentproject": "", "weekly": weekly, "daily": daily})
 	      
