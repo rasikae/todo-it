@@ -159,6 +159,8 @@ def home(request, delete=''):
 	          return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4,"form5": form5, "currentproject": "", "weekly": weekly, "daily": daily})                
 	         
 	      # the following are various submit forms
+
+        # export a task to google calendar
 	      if "export" in request.POST:
 	          form5 = deleteprojectform(request.POST)
 	          if form5.is_valid():
@@ -170,9 +172,8 @@ def home(request, delete=''):
                         title = task.title
                         date = task.do_date
                         desc = task.description
-                        #DO JSON, CALENDAR LOGIN, EXPORT STUFF
 
-                        startdate = date.date() #change all datetime to date  <-----------------------
+                        startdate = date.date() #change all datetime to date  <----------
 
                         enddate = date + datetime.timedelta(1)
                         enddate = enddate.date()
@@ -248,7 +249,7 @@ def home(request, delete=''):
 	                  form = taskform()
 	                  return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "form5": form5,"currentproject": "", "weekly": weekly, "daily": daily})
           
-         # Adds current user to given user's collaborators
+        # Adds current user to given user's collaborators
 	      if 'collabsubmit' in request.POST:
 	          form4 = collabform(request.POST)
 	          print("adding collaborator")
@@ -271,7 +272,7 @@ def home(request, delete=''):
 	                  form4 = collabform()
 	                  return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "form5": form5,"currentproject": "", "weekly": weekly, "daily": daily})
           
-          # Creates new project from form data
+        # Creates new project from form data
 	      elif 'projectsubmit' in request.POST:
 	          form2 = projectform(request.POST)
 	          # check whether it's valid:
@@ -315,10 +316,11 @@ def home(request, delete=''):
 	      	return redirect('login')
 	  return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "form5": form5,"currentproject": "", "weekly": weekly, "daily": daily}) 
 
+# This view is for projects, is largely the same as the home view
 def home2(request, project):
-    # This view is for projects, is largely the same as the home view
     
     # Task.objects.all().delete() # deletes all task objects
+
     date = datetime.date.today()
     start_week = date - datetime.timedelta(date.weekday())
     end_week = start_week + datetime.timedelta(7)
@@ -338,7 +340,7 @@ def home2(request, project):
     daily=""
     
     if request.method == 'GET':
-        print("WEIRD")
+        print("GET delete")
         # Decides if the get request is for a task delete, or to view a project
         if '/' in project:
             task = os.path.basename(project)
@@ -352,7 +354,8 @@ def home2(request, project):
             return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4,"form5": form5, "currentproject": "", "weekly": weekly, "daily": daily})
         else:
             return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4,"form5": form5, "currentproject": project, "weekly": weekly, "daily": daily})
-
+	  
+	  # The following are different sort requests, sorting is done, then the page is refreshed
     if request.method == 'POST':
         if "sortadded" in request.POST:
             tasks = Task.objects.all().filter(user=request.user)
@@ -381,8 +384,9 @@ def home2(request, project):
             users = Task.objects.filter(user__in=users1).order_by('due_date')
             return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4,"form5": form5, "currentproject": project, "weekly": weekly, "daily": daily})                
 
-        # create a form instance and populate it with data from the request:
-        
+        # the following are various submit forms
+
+        # export a task to google calendar
         if "export" in request.POST:
 	          form5 = deleteprojectform(request.POST)
 	          if form5.is_valid():
@@ -394,18 +398,17 @@ def home2(request, project):
                         title = task.title
                         date = task.due_date
                         desc = task.description
-                        #DO JSON, CALENDAR LOGIN, EXPORT STUFF
 
-                        startdate = date.date() #change all datetime to date  <-----------------------
+                        startdate = date.date() #change all datetime to date  <----------
 
                         enddate = date + datetime.timedelta(1)
                         enddate = enddate.date()
 
                         addEvent2Calendar(request.user,title,startdate,enddate,desc)
-                        
+
                         form5 = deleteprojectform()
                         return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4,"form5": form5, "currentproject": "", "weekly": weekly, "daily": daily})
-	      
+
         if "deleteproject" in request.POST:
 	          form5 = deleteprojectform(request.POST)
 	          # check whether it's valid:
@@ -415,6 +418,7 @@ def home2(request, project):
 	              form5 = deleteprojectform()
 	              return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4,"form5": form5, "currentproject": project, "weekly": weekly, "daily": daily})
 	      
+	      # takes new task form data and creates a new task
         if 'tasksubmit' in request.POST:
             form = taskform(request.POST)
             # check whether it's valid:
@@ -438,6 +442,8 @@ def home2(request, project):
                 tasks = Task.objects.all().filter(user=request.user)
                 form = taskform()
                 return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4,"form5": form5, "currentproject": project, "weekly": weekly, "daily": daily})
+        
+        # reads same type of form as above, modifies fields for given title
         if 'taskedit' in request.POST:
             form = taskform(request.POST)
             # check whether it's valid:
@@ -466,6 +472,7 @@ def home2(request, project):
                     form = taskform()
                     return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4, "form5": form5,"currentproject": project, "weekly": weekly, "daily": daily})
 
+        # Adds current user to given user's collaborators
         if 'collabsubmit' in request.POST:
             form4 = collabform(request.POST)
             # check whether it's valid:
@@ -487,6 +494,7 @@ def home2(request, project):
                     form4 = collabform()
                     return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4,"form5": form5, "currentproject": project, "weekly": weekly, "daily": daily})
 
+        # Creates new project from form data
         elif 'projectsubmit' in request.POST:
             form2 = projectform(request.POST)
             # check whether it's valid:
@@ -502,6 +510,8 @@ def home2(request, project):
                 projects = Project.objects.all().filter(user=request.user)
                 form2 = projectform()
                 return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4,"form5": form5, "currentproject": project, "weekly": weekly, "daily": daily})
+        
+        # Creates subtask for given task with form info
         elif 'subtasksubmit' in request.POST:
             form3 = subtaskform(request.POST)
             if form3.is_valid():
