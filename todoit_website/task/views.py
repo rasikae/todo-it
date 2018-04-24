@@ -264,6 +264,8 @@ def home(request, delete=''):
 	              except ObjectDoesNotExist:
 	                  temp_user = None
 	              if temp_user:
+	                  if temp_user.username==request.user.username:
+	                      return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4,"form5": form5, "currentproject": "", "weekly": weekly, "daily": daily})
 	                  temp_user.collab = temp_user.collab+","+request.user.username
 	                  temp_user.save()
 	                  collabs = request.user.collab.replace(' ', '').split(',')
@@ -486,6 +488,8 @@ def home2(request, project):
                 except ObjectDoesNotExist:
                     temp_user = None
                 if temp_user:
+                    if temp_user.username==request.user.username:
+                        return render(request, 'task/home.html', {'users': users, 'tasks': tasks, 'projects': projects, 'form': form, 'form2': form2, "form3": form3, 'form4': form4,"form5": form5, "currentproject": project, "weekly": weekly, "daily": daily})
                     temp_user.collab = temp_user.collab+","+request.user.username
                     temp_user.save()
                     collabs = request.user.collab.replace(' ', '').split(',')
